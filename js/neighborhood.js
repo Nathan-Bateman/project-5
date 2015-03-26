@@ -21,12 +21,18 @@ var Person = function (name, title, yearshere, lat, long) {
  this.name = ko.observable(name);
  this.title = ko.observable(title);
  this.yearshere = ko.observable(yearshere);
- this.lat = ko.observable(location);
+ this.lat = ko.observable(lat);
+ this.long = ko.observable(long);
 
  }
 
 var Markers = function (lat, long) {
-  
+  this.marker = new google.maps.Marker({
+    position:new google.maps.LatLng(lat,long),
+    map: map,
+    title:'***',
+
+  });
 
 
  }
