@@ -17,19 +17,25 @@ function initialize() {
 google.maps.event.addDomListener(window, 'load', initialize);
 
 
-function Person (name, title, yearshere, location) {
+var Person = function (name, title, yearshere, lat, long) {
  this.name = ko.observable(name);
  this.title = ko.observable(title);
  this.yearshere = ko.observable(yearshere);
- this.loc = ko.observable(location);
+ this.lat = ko.observable(location);
 
  }
 
-function mapViewModel() {
+var Markers = function (lat, long) {
+  
+
+
+ }
+
+var mapViewModel = function () {
 	var self = this;
 	self.people = ko.observableArray([
- new Person("Tony", "HS Teacher - Computers", 4, "13.665189, 100.664765"),
- new Person("Allan J", "MS Teacher - Math", 6, "13.665308, 100.664416")
+ new Person("Tony R - ", "HS Teacher - Computers", 4, 13.665189, 100.664765),
+ new Person("Allan J - ", "MS Teacher - Math", 6, 13.665308, 100.664416)
  ]);
 
 };

@@ -9,6 +9,11 @@
 <script src="js/jQuery.js"></script>
   </head>
   <body>
+  	<div id='BV-folks'>
+  	 <ul data-bind="foreach: people">
+  	 	<li> <span data-bind="text: name"></span><span data-bind="text: title"></span></li>
+</ul>
+</div>
 	<form>
 <input class="search" type="search" placeholder="search">
 </form>
