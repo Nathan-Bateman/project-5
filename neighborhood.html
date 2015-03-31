@@ -9,19 +9,18 @@
 <script src="js/jQuery.js"></script>
   </head>
   <body>
-  	
+ 
+<form>
+<input class="search" type="search" placeholder="search">
+</form> 	
   	<div id='BV-folks'>
-  	 <ul data-bind="foreach: people">
+  	 <ul class='list-view' data-bind="foreach: people">
   	 	<li> <span data-bind="text: name"></span><span data-bind="text: title"></span></li>
 </ul>
 </div>
-	<form>
-<input class="search" type="search" placeholder="search">
-</form>
+	
 <div id="map-canvas"></div>
-<form>
-<input class="search" type="search" placeholder="search">
-</form>
+
 <script src="js/neighborhood.js"></script>
   </body>
 

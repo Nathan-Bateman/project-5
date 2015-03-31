@@ -2,14 +2,12 @@ var defMapOptions = {
   zoom: 16,
   center: new google.maps.LatLng(13.66448,100.66160)
 }
+var map = new google.maps.Map(document.getElementById('map-canvas'), defMapOptions);
 function initialize() {
-  var myLatlng = new google.maps.LatLng(13.66448,100.66160);
-  var mapOptions = {
-    zoom: 16,
-    center: myLatlng
-  }
+  var myLatlng = defMapOptions.center;
+  var mapOptions = defMapOptions;
   
-  var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+  //var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
   var marker = new google.maps.Marker({
       position: myLatlng,
@@ -29,11 +27,14 @@ var Person = function (name, title, yearshere, lat, long) {
  this.yearshere = ko.observable(yearshere);
  this.lat = ko.observable(lat);
  this.long = ko.observable(long);
+ this.nameTitle = ko.computed(function() {
+ return this.name() + " " + this.title();
+ }, this);
+
 
  }
 
 var addMarker = function (lat, long, title) {
-  var map = new google.maps.Map(document.getElementById('map-canvas'), defMapOptions);
   this.marker = new google.maps.Marker({
     position: new google.maps.LatLng(lat,long),
     map: map,
@@ -41,9 +42,6 @@ var addMarker = function (lat, long, title) {
 
   });
  }
-
-addMarker(13.665189, 100.664765,'bill');
-addMarker(13.66448, 100.66160,'bv');
 
 
 var mapViewModel = function () {
@@ -55,8 +53,11 @@ var mapViewModel = function () {
 
   self.markers = function() {
     for (var i = 0; i < self.people().length; i++) {
-    new addMarker(self.people()[i].lat(), self.people()[i].long(), self.people()[i].title());
+    new addMarker(self.people()[i].lat(), self.people()[i].long(), self.people()[i].nameTitle());
     };
   };
+
+  self.markers();
 };
 ko.applyBindings(new mapViewModel());
+//self.markers();
