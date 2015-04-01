@@ -21,10 +21,9 @@ function initialize() {
 
 
 
-var Person = function (name, title, yearshere, lat, long) {
+var Person = function (name, title, lat, long) {
  this.name = ko.observable(name);
  this.title = ko.observable(title);
- this.yearshere = ko.observable(yearshere);
  this.lat = ko.observable(lat);
  this.long = ko.observable(long);
  this.nameTitle = ko.computed(function() {
@@ -47,17 +46,16 @@ var addMarker = function (lat, long, title) {
 var mapViewModel = function () {
 	var self = this;
 	self.people = ko.observableArray([
- new Person("Tony R - ", "HS Teacher - Computers", 4, 13.665189, 100.664765),
- new Person("Allan J - ", "MS Teacher - Math", 6, 13.665308, 100.664416)
+ new Person("Tony R - ", "HS/Computers", 13.665189, 100.664765),
+ new Person("Allan J - ", "MS/Math", 13.665308, 100.664416)
  ]);
 
-  self.markers = function() {
+  self.personMarkers = function() {
     for (var i = 0; i < self.people().length; i++) {
     new addMarker(self.people()[i].lat(), self.people()[i].long(), self.people()[i].nameTitle());
     };
   };
 
-  self.markers();
+  self.personMarkers();
 };
 ko.applyBindings(new mapViewModel());
-//self.markers();
