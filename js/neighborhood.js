@@ -9,12 +9,12 @@ function initialize() {
   
   //var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-  var marker = new google.maps.Marker({
+ /*   var marker = new google.maps.Marker({
       position: myLatlng,
       map: map,
       title: 'Bang Na Vill Ahhh!'
   });
- 
+  */
 }
  google.maps.event.addDomListener(window, 'load', initialize);
  
@@ -42,13 +42,25 @@ var addMarker = function (lat, long, title) {
   });
  }
 
+var Folks = [ new Person("Tony R - ", "HS/Computers", 13.665189, 100.664765),
+ new Person("Allan J - ", "MS/Math", 13.665308, 100.664416)
+];
 
 var mapViewModel = function () {
 	var self = this;
-	self.people = ko.observableArray([
- new Person("Tony R - ", "HS/Computers", 13.665189, 100.664765),
- new Person("Allan J - ", "MS/Math", 13.665308, 100.664416)
- ]);
+  self.people = ko.observableArray(Folks);
+  self.filter = ko.observable("");
+  self.search = function (value){
+        self.people.removeAll();
+        for (var i = 0; i < Folks.length; i++) {
+          if (self.people()[i].name().toLowerCase().indexOf(value.toLowerCase()) >=0 ) {
+
+                
+
+          };
+        };
+  };
+
 
   self.personMarkers = function() {
     for (var i = 0; i < self.people().length; i++) {
