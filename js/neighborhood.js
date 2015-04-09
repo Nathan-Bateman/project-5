@@ -20,7 +20,7 @@ function initialize() {
  
 
 
-
+// function to add people to map
 var Person = function (name, title, lat, long) {
  this.name = ko.observable(name);
  this.title = ko.observable(title);
@@ -32,7 +32,7 @@ var Person = function (name, title, lat, long) {
 
 
  }
-
+//function to add a marker to the map
 var addMarker = function (lat, long, title) {
   this.marker = new google.maps.Marker({
     position: new google.maps.LatLng(lat,long),
@@ -41,27 +41,28 @@ var addMarker = function (lat, long, title) {
 
   });
  }
-
+//an array of people and their coordinates that will go on the map
 var Folks = [ new Person("Tony R - ", "HS/Computers", 13.665189, 100.664765),
  new Person("Allan J - ", "MS/Math", 13.665308, 100.664416)
 ];
 
 var mapViewModel = function () {
 	var self = this;
+  //populate the below array with the people from the "Folks" array
   self.people = ko.observableArray(Folks);
+  //the below is supposed to be binded to the input markup, but it doesn't seem to be working
   self.filter = ko.observable("");
-  self.search = function (value){
+  //search function modified from http://opensoul.org/2011/06/23/live-search-with-knockoutjs/
+  self.search = function (value) {
         self.people.removeAll();
         for (var i = 0; i < Folks.length; i++) {
-          if (self.people()[i].name().toLowerCase().indexOf(value.toLowerCase()) >=0 ) {
-
-                
-
+          if (Folks[i].name().toLowerCase().indexOf(value.toLowerCase()) >= 0 ) {
+                self.people().push(Folks[i]);
           };
         };
   };
 
-
+//adds markers to map by looping through 
   self.personMarkers = function() {
     for (var i = 0; i < self.people().length; i++) {
     new addMarker(self.people()[i].lat(), self.people()[i].long(), self.people()[i].nameTitle());
@@ -69,5 +70,7 @@ var mapViewModel = function () {
   };
 
   self.personMarkers();
+  //self.filter().subscribe(self.search());
 };
 ko.applyBindings(new mapViewModel());
+
