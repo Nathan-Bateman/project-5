@@ -11,7 +11,7 @@
   <body>
  
 <form>
-<input class='search'placeholder="Search…" type="search" data-bind="value: filter, valueUpdate: 'keyup'" autocomplete="off">
+<input class='search'placeholder="Search…" type="search" data-bind=' event: { keyup: search }' autocomplete="off">
 </form> 	
   	<div id='BV-folks'>
   	 <ul class='list-view' data-bind="foreach: people">
@@ -23,6 +23,5 @@
 
 <script src="js/neighborhood.js"></script>
   </body>
-
-
+<pre data-bind="text: ko.toJSON($root, null, 2)"></pre>
 </html>
