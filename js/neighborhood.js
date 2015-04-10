@@ -51,18 +51,19 @@ var mapViewModel = function () {
   //populate the below array with the people from the "Folks" array
   self.people = ko.observableArray(Folks);
   //the below is supposed to be binded to the input markup, but it doesn't seem to be working
-  self.filter = ko.observable("");
+  self.filter = ko.observable('');
   //search function modified from http://opensoul.org/2011/06/23/live-search-with-knockoutjs/
   self.search = function (value) {
         self.people.removeAll();
-        for (var i = 0; i < Folks.length; i++) {
-          if (Folks[i].name().toLowerCase().indexOf(value.toLowerCase()) >= 0 ) {
+        //for (var i = 0; i < Folks.length; i++) {
+          console.log(Folks[0]);
+          /*if (Folks[i].name().toLowerCase().indexOf(value.toLowerCase()) >= 0 ) {
                 self.people().push(Folks[i]);
-          };
-        };
+          };*/
+        //};
   };
 
-//adds markers to map by looping through 
+//adds markers to map by looping through the observable array of self.people
   self.personMarkers = function() {
     for (var i = 0; i < self.people().length; i++) {
     new addMarker(self.people()[i].lat(), self.people()[i].long(), self.people()[i].nameTitle());
@@ -70,7 +71,8 @@ var mapViewModel = function () {
   };
 
   self.personMarkers();
-  //self.filter().subscribe(self.search());
+  
 };
+
 ko.applyBindings(new mapViewModel());
 
