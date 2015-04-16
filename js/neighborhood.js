@@ -32,15 +32,22 @@ var Person = function (name, title, lat, long) {
 
 
  }
+ //empty array to hold markers
+ var markers = [];
 //function to add a marker to the map
 var addMarker = function (lat, long, title) {
-  this.marker = new google.maps.Marker({
+    marker = new google.maps.Marker({
     position: new google.maps.LatLng(lat,long),
     map: map,
     title: title
 
   });
+  markers.push(marker);
  }
+ //function to clear all markers
+ function clearMarkers() {
+  setAllMap(null);
+}
 //an array of people and their coordinates that will go on the map
 var Folks = [ new Person("Tony R - ", "HS/Computers", 13.665189, 100.664765),
  new Person("Allan J - ", "MS/Math", 13.665308, 100.664416)
@@ -49,28 +56,35 @@ var Folks = [ new Person("Tony R - ", "HS/Computers", 13.665189, 100.664765),
 var mapViewModel = function () {
 	var self = this;
   //populate the below array with the people from the "Folks" array
-  self.people = ko.observableArray(Folks);
+  self.people = ko.observableArray(Folks.slice(0));
   //the below is supposed to be binded to the input markup, but it doesn't seem to be working
-  self.filter = ko.observable('');
-  //search function modified from http://opensoul.org/2011/06/23/live-search-with-knockoutjs/
-  self.search = function (value) {
-        self.people.removeAll();
-        //for (var i = 0; i < Folks.length; i++) {
-          console.log(Folks[0]);
-          /*if (Folks[i].name().toLowerCase().indexOf(value.toLowerCase()) >= 0 ) {
-                self.people().push(Folks[i]);
-          };*/
-        //};
-  };
-
-//adds markers to map by looping through the observable array of self.people
+    self.filter = ko.observable('');
+ //temporary array used to house people/places from search input and then repopulate the self.people array
+    self.temp = ko.observableArray()
+  
+  //adds markers to map by looping through the observable array of self.people
   self.personMarkers = function() {
     for (var i = 0; i < self.people().length; i++) {
     new addMarker(self.people()[i].lat(), self.people()[i].long(), self.people()[i].nameTitle());
     };
   };
+self.personMarkers();
+  self.search = function () {
+      var filter = self.filter();
+        self.people.removeAll();
+        for (var i = 0; i < Folks.length; i++) {
+          if (Folks[i].name().toLowerCase().indexOf(filter.toLowerCase()) >= 0 ) {
+                self.temp().push(Folks[i]);
+                
+          };
+        };
+        self.people(self.temp());
+        self.personMarkers();
+  };
 
-  self.personMarkers();
+
+
+  
   
 };
 

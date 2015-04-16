@@ -1,1 +1,8 @@
 https://github.com/bahalps/frontend-nanodegree-neighborhood-map/blob/master/index.html
+http://www.codeproject.com/Articles/822879/Searching-filtering-and-sorting-with-KnockoutJS-in
+http://wrightshq.com/playground/placing-multiple-markers-on-a-google-map-using-api-3/
+http://stackoverflow.com/questions/3059044/google-maps-js-api-v3-simple-multiple-marker-example
+http://files2.syncfusion.com/Downloads/Ebooks/Knockoutjs_Succinctly.pdf
+http://knockoutjs.com
+http://opensoul.org/2011/06/23/live-search-with-knockoutjs/
+http://discussions.udacity.com/t/implementing-search-bar/2192

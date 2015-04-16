@@ -9,10 +9,10 @@
 <script src="js/jQuery.js"></script>
   </head>
   <body>
- 
-<form>
-<input class='search'placeholder="Search…" type="search" data-bind=' event: { keyup: search }' autocomplete="off">
-</form> 	
+<form data-bind="submit: search">
+<input class='search' placeholder="Search…" type="search" data-bind='textInput: filter, event: { keyup: search }' autocomplete="off">
+</form>
+
   	<div id='BV-folks'>
   	 <ul class='list-view' data-bind="foreach: people">
   	 	<li> <span data-bind="text: name"></span><span data-bind="text: title"></span></li>
@@ -23,5 +23,5 @@
 
 <script src="js/neighborhood.js"></script>
   </body>
-<pre data-bind="text: ko.toJSON($root, null, 2)"></pre>
+
 </html>
