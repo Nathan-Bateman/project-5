@@ -6,15 +6,6 @@ var map = new google.maps.Map(document.getElementById('map-canvas'), defMapOptio
 function initialize() {
   var myLatlng = defMapOptions.center;
   var mapOptions = defMapOptions;
-  
-  //var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
- /*   var marker = new google.maps.Marker({
-      position: myLatlng,
-      map: map,
-      title: 'Bang Na Vill Ahhh!'
-  });
-  */
 }
  google.maps.event.addDomListener(window, 'load', initialize);
  
@@ -34,19 +25,34 @@ var Person = function (name, title, lat, long) {
  }
  //empty array to hold markers
  var markers = [];
-//function to add a marker to the map
+//function to add a marker to the markers array
 var addMarker = function (lat, long, title) {
-    marker = new google.maps.Marker({
+    this.marker = new google.maps.Marker({
     position: new google.maps.LatLng(lat,long),
     map: map,
     title: title
 
   });
-  markers.push(marker);
+    markers.push(this.marker);
  }
- //function to clear all markers
- function clearMarkers() {
+//put all markers on map
+ function setAllMap(map) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(map);
+  }
+}
+// Shows any markers currently in the array.
+function showMarkers() {
+  setAllMap(map);
+}
+//takes markers off the map but keeps them in the markers array
+function clearMarkers() {
   setAllMap(null);
+}
+//takes markers out of the array/off of the map
+function deleteMarkers() {
+  clearMarkers();
+  markers = [];
 }
 //an array of people and their coordinates that will go on the map
 var Folks = [ new Person("Tony R - ", "HS/Computers", 13.665189, 100.664765),
@@ -65,13 +71,17 @@ var mapViewModel = function () {
   //adds markers to map by looping through the observable array of self.people
   self.personMarkers = function() {
     for (var i = 0; i < self.people().length; i++) {
-    new addMarker(self.people()[i].lat(), self.people()[i].long(), self.people()[i].nameTitle());
+      addMarker(self.people()[i].lat(), self.people()[i].long(), self.people()[i].nameTitle());
     };
+    showMarkers();
   };
-self.personMarkers();
+  self.personMarkers();
+
   self.search = function () {
       var filter = self.filter();
+        deleteMarkers();
         self.people.removeAll();
+     
         for (var i = 0; i < Folks.length; i++) {
           if (Folks[i].name().toLowerCase().indexOf(filter.toLowerCase()) >= 0 ) {
                 self.temp().push(Folks[i]);
@@ -80,6 +90,7 @@ self.personMarkers();
         };
         self.people(self.temp());
         self.personMarkers();
+      
   };
 
 
