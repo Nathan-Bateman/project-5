@@ -8,8 +8,22 @@ function initialize() {
   var mapOptions = defMapOptions;
 }
  google.maps.event.addDomListener(window, 'load', initialize);
- 
-
+//default content for info windows
+  var contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
+      '<div id="bodyContent">'+
+      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
+      'sandstone rock formation in the southern part of the '+
+      'Northern Territory, central Australia.'+
+      '</div>'+
+      '</div>';
+// variable that is the one and only info window of the page..must figure out how to change content
+  var infowindow = new google.maps.InfoWindow({
+      content: contentString,
+      maxWidth: 200
+  });
 
 // function to add people to map
 var Person = function (name, title, lat, long) {
@@ -35,13 +49,33 @@ var addMarker = function (lat, long, title) {
   });
     markers.push(this.marker);
  }
-//put all markers on map
+//put all markers on map with info windows
+//TODO: modify animation so that it applies to all markers and not just the last one in the array
  function setAllMap(map) {
   for (var i = 0; i < markers.length; i++) {
-    markers[i].setMap(map);
+      var mark = markers[i];
+      var toggleBounce = function toggleBounce() {
+
+        if (mark.getAnimation() != null) {
+          mark.setAnimation(null);
+        } else {
+          mark.setAnimation(google.maps.Animation.BOUNCE);
+        }
+      };
+      
+      mark.setMap(map);
+      google.maps.event.addListener(mark, 'click', toggleBounce);
+      google.maps.event.addListener(mark, 'click', (function(markcopy) {
+        
+          return function() {
+          infowindow.setContent('<h3>' + markcopy.title + '</h3>');
+          infowindow.open(map, this);
+        };
+   
+    })(mark));
   }
 }
-// Shows any markers currently in the array.
+// Shows any markers currently in the markers array.
 function showMarkers() {
   setAllMap(map);
 }
@@ -54,6 +88,15 @@ function deleteMarkers() {
   clearMarkers();
   markers = [];
 }
+//makes markers bounce up and down..invoked when clicked
+function toggleBounce() {
+
+  if (marker.getAnimation() != null) {
+    marker.setAnimation(null);
+  } else {
+    marker.setAnimation(google.maps.Animation.BOUNCE);
+  }
+}
 //an array of people and their coordinates that will go on the map
 var Folks = [ new Person("Tony R - ", "HS/Computers", 13.665189, 100.664765),
  new Person("Allan J - ", "MS/Math", 13.665308, 100.664416)
@@ -63,7 +106,7 @@ var mapViewModel = function () {
 	var self = this;
   //populate the below array with the people from the "Folks" array
   self.people = ko.observableArray(Folks.slice(0));
-  //the below is supposed to be binded to the input markup, but it doesn't seem to be working
+  //the below is bound to the input markup
     self.filter = ko.observable('');
  //temporary array used to house people/places from search input and then repopulate the self.people array
     self.temp = ko.observableArray()
