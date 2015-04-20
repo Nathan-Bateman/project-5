@@ -50,18 +50,21 @@ var addMarker = function (lat, long, title) {
  };
 //put all markers on map with interactive info windows that open and bounce when clicked and
 //close and stop bouncing when clicked or closed
-//TODO: modify animation so that it applies to all markers and not just the last one in the array
+//TODO: modify animation so that when a marker is clicked..all other markers stop bouncing save the one clicked
+var selectedMarker = null;
  function setAllMap(map) {
+  
   for (var i = 0; i < markers.length; i++) {
       var mark = markers[i];
       mark.setMap(map);
 //listener to add the bounce animation to each marker
-      google.maps.event.addListener(mark, 'click', (function(markcop) {
-          return function() {
-              if (markcop.getAnimation() != null) {
-                  markcop.setAnimation(null);
+      google.maps.event.addListener(mark, 'click', (function(markcopy) {
+          return function() {  
+              if (markcopy.getAnimation() != null) {
+                  markcopy.setAnimation(null);
                 } else {
-          markcop.setAnimation(google.maps.Animation.BOUNCE);
+          markcopy.setAnimation(google.maps.Animation.BOUNCE);
+
         }
       };
     })(mark));
@@ -88,25 +91,16 @@ var addMarker = function (lat, long, title) {
 // Shows any markers currently in the markers array.
 function showMarkers() {
   setAllMap(map);
-}
+};
 //takes markers off the map but keeps them in the markers array
 function clearMarkers() {
   setAllMap(null);
-}
+};
 //takes markers out of the array/off of the map
 function deleteMarkers() {
   clearMarkers();
   markers = [];
-}
-//makes markers bounce up and down..invoked when clicked
-function toggleBounce() {
-
-  if (marker.getAnimation() != null) {
-    marker.setAnimation(null);
-  } else {
-    marker.setAnimation(google.maps.Animation.BOUNCE);
-  }
-}
+};
 //an array of people and their coordinates that will go on the map
 var Folks = [ new Person("Tony R - ", "HS/Computers", 13.665189, 100.664765),
  new Person("Allan J - ", "MS/Math", 13.665308, 100.664416)
