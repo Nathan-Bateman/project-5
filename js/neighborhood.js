@@ -19,12 +19,12 @@ function initialize() {
       'Northern Territory, central Australia.'+
       '</div>'+
       '</div>';
-// variable that is the one and only info window of the page..must figure out how to change content
+// variable that is the one and only info window of the page..content changes upon a click event
   var infowindow = new google.maps.InfoWindow({
       content: contentString,
       maxWidth: 200
   });
-
+ 
 // function to add people to map
 var Person = function (name, title, lat, long) {
  this.name = ko.observable(name);
@@ -34,9 +34,7 @@ var Person = function (name, title, lat, long) {
  this.nameTitle = ko.computed(function() {
  return this.name() + " " + this.title();
  }, this);
-
-
- }
+ };
  //empty array to hold markers
  var markers = [];
 //function to add a marker to the markers array
@@ -47,24 +45,27 @@ var addMarker = function (lat, long, title) {
     title: title
 
   });
+    
     markers.push(this.marker);
- }
-//put all markers on map with info windows
+ };
+//put all markers on map with interactive info windows that open and bounce when clicked and
+//close and stop bouncing when clicked or closed
 //TODO: modify animation so that it applies to all markers and not just the last one in the array
  function setAllMap(map) {
   for (var i = 0; i < markers.length; i++) {
       var mark = markers[i];
-      var toggleBounce = function toggleBounce() {
-
-        if (mark.getAnimation() != null) {
-          mark.setAnimation(null);
-        } else {
-          mark.setAnimation(google.maps.Animation.BOUNCE);
+      mark.setMap(map);
+//listener to add the bounce animation to each marker
+      google.maps.event.addListener(mark, 'click', (function(markcop) {
+          return function() {
+              if (markcop.getAnimation() != null) {
+                  markcop.setAnimation(null);
+                } else {
+          markcop.setAnimation(google.maps.Animation.BOUNCE);
         }
       };
-      
-      mark.setMap(map);
-      google.maps.event.addListener(mark, 'click', toggleBounce);
+    })(mark));
+//listener to add the information window to each marker
       google.maps.event.addListener(mark, 'click', (function(markcopy) {
         
           return function() {
@@ -73,8 +74,17 @@ var addMarker = function (lat, long, title) {
         };
    
     })(mark));
+//listener to stop the bounce animation upon closing the information window
+      google.maps.event.addListener(infowindow, 'closeclick', (function(markcopy) {
+        
+          return function() {
+          markcopy.setAnimation(null);
+        };
+   
+    })(mark));
+
   }
-}
+};
 // Shows any markers currently in the markers array.
 function showMarkers() {
   setAllMap(map);
