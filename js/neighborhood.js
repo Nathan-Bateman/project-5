@@ -57,13 +57,14 @@ var selectedMarker = null;
   for (var i = 0; i < markers.length; i++) {
       var mark = markers[i];
       mark.setMap(map);
-//listener to add the bounce animation to each marker
+//listener to add the bounce animation to each marker..each marker bounces twice and then stops
       google.maps.event.addListener(mark, 'click', (function(markcopy) {
           return function() {  
               if (markcopy.getAnimation() != null) {
                   markcopy.setAnimation(null);
                 } else {
           markcopy.setAnimation(google.maps.Animation.BOUNCE);
+          setTimeout(function(){ markcopy.setAnimation(null); }, 1500);
 
         }
       };
@@ -123,23 +124,30 @@ var mapViewModel = function () {
     showMarkers();
   };
   self.personMarkers();
-
+//filters the list view and displays only the markers that match the search query
   self.search = function () {
       var filter = self.filter();
         deleteMarkers();
         self.people.removeAll();
      
         for (var i = 0; i < Folks.length; i++) {
-          if (Folks[i].name().toLowerCase().indexOf(filter.toLowerCase()) >= 0 ) {
-                self.temp().push(Folks[i]);
-                
-          };
-        };
-        self.people(self.temp());
-        self.personMarkers();
+          if (Folks[i].nameTitle().toLowerCase().indexOf(filter.toLowerCase()) >= 0 ) {
+                self.temp().push(Folks[i]);    
+              };
+            };
+      self.people(self.temp());
+      self.personMarkers();
       
   };
+//causes all markers to disappear save one matching the person clicked in the list view
+//TODO: make it able to refresh easy to get back all places
+self.listClick = function(place) {
+  deleteMarkers();
+  self.people.removeAll();
+  self.people.push(place);
+  self.personMarkers();
 
+};
 
 
   
