@@ -15,7 +15,7 @@
 
   	<div id='BV-folks'>
   	 <ul class='list-view' data-bind="foreach: people">
-  	 	<li> <span data-bind="text: name"></span><span data-bind="text: title"></span></li>
+  	 	<li> <span data-bind="text: nameTitle, click: $parent.listClick"></span></li>
 </ul>
 </div>
 	
