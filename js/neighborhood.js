@@ -51,7 +51,6 @@ var addMarker = function (lat, long, title) {
 //put all markers on map with interactive info windows that open and bounce when clicked and
 //close and stop bouncing when clicked or closed
 //TODO: modify animation so that when a marker is clicked..all other markers stop bouncing save the one clicked
-var selectedMarker = null;
  function setAllMap(map) {
   
   for (var i = 0; i < markers.length; i++) {
@@ -139,14 +138,15 @@ var mapViewModel = function () {
       self.personMarkers();
       
   };
-//causes all markers to disappear save one matching the person clicked in the list view
-//TODO: make it able to refresh easy to get back all places
-self.listClick = function(place) {
-  deleteMarkers();
-  self.people.removeAll();
-  self.people.push(place);
-  self.personMarkers();
 
+//causes info marker to act as if it's been clicked when the corresponding list item is clicked
+self.listClick = function(place) {
+  for (var i = 0; i < markers.length; i++) {
+        var mark = markers[i];
+      if (mark.title === place.nameTitle()) {
+          google.maps.event.trigger(mark,"click");
+        };
+    }
 };
 
 

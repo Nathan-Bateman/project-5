@@ -6,3 +6,8 @@ http://files2.syncfusion.com/Downloads/Ebooks/Knockoutjs_Succinctly.pdf
 http://knockoutjs.com
 http://opensoul.org/2011/06/23/live-search-with-knockoutjs/
 http://discussions.udacity.com/t/implementing-search-bar/2192
+http://stackoverflow.com/questions/28227255/google-maps-adding-streetview-to-each-infowindow
+http://stackoverflow.com/questions/6515250/one-marker-animation-at-a-time-google-maps-api-3
+http://jsfiddle.net/RASG/X5mhL/
+https://groups.google.com/forum/#!topic/google-maps-js-api-v3/_kmIxA7ZZcM
+http://jsfiddle.net/RASG/X5mhL/
