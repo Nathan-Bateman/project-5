@@ -1,3 +1,40 @@
+var venues = {
+  foodland: '4b45bb48f964a520aa0f26e3',
+  central: '4b529cbdf964a520e28327e3',
+  mega:'empty',
+  paradise:'empty',
+  seacon:'empty',
+  dusit:'empty',
+  yellow:'empty',
+  lotus:'empty',
+  bigc:'empty',
+  mackro:'empty',
+  thainakarin:'empty',
+  sikarin:'empty',
+  samitivejsuk:'empty',
+  samitivejsrin:'empty',
+  bumrungrad:'empty'
+};
+function loadData (){
+  for (var venue in venues) {
+    var ID = venues[venue];
+    console.log (ID);
+    var URL = 'https://api.foursquare.com/v2/venues/' + ID + '?&client_id=1ZZZKPHYYJEXJ13CLALWGP35AWD0LJFHFB3Z5DABSCFPXWVY&client_secret=MLYWIJVO3CA2HKSQ1AUVSVLV2IQTV3X3AFCBIU0QZFC3O41C&v=20140806&m=foursquare';
+  $.ajax(
+      {
+        url: URL,
+        dataType: 'jsonp',
+        success: function(response){
+          console.log(response);
+        }
+    });
+  };
+  
+}
+  
+  
+
+loadData();
 var defMapOptions = {
   zoom: 16,
   center: new google.maps.LatLng(13.66448,100.66160)
@@ -9,19 +46,12 @@ function initialize() {
 }
  google.maps.event.addDomListener(window, 'load', initialize);
 //default content for info windows
-  var contentString = '<div id="content">'+
-      '<div id="siteNotice">'+
-      '</div>'+
-      '<h1 id="firstHeading" class="firstHeading">Uluru</h1>'+
-      '<div id="bodyContent">'+
-      '<p><b>Uluru</b>, also referred to as <b>Ayers Rock</b>, is a large ' +
-      'sandstone rock formation in the southern part of the '+
-      'Northern Territory, central Australia.'+
-      '</div>'+
-      '</div>';
+var content = document.createElement("DIV");
+var htmlContent = document.createElement("DIV");
+content.appendChild(htmlContent)
 // variable that is the one and only info window of the page..content changes upon a click event
   var infowindow = new google.maps.InfoWindow({
-      content: contentString,
+      content: content,
       maxWidth: 200
   });
  
@@ -38,11 +68,12 @@ var Person = function (name, title, lat, long) {
  //empty array to hold markers
  var markers = [];
 //function to add a marker to the markers array
-var addMarker = function (lat, long, title) {
+var addMarker = function (lat, long, title, html) {
     this.marker = new google.maps.Marker({
     position: new google.maps.LatLng(lat,long),
     map: map,
-    title: title
+    title: title,
+    content:''
 
   });
     
