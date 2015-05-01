@@ -1,7 +1,9 @@
+//TODO: fill in rest of IDs and somehow sync them into the info windows of each created marker
+//must also figure out how to create venues...with or without Person function??
 var venues = {
   foodland: '4b45bb48f964a520aa0f26e3',
-  central: '4b529cbdf964a520e28327e3',
-  mega:'empty',
+  central: '4b529cbdf964a520e28327e3'
+ /* mega:'empty',
   paradise:'empty',
   seacon:'empty',
   dusit:'empty',
@@ -13,28 +15,49 @@ var venues = {
   sikarin:'empty',
   samitivejsuk:'empty',
   samitivejsrin:'empty',
-  bumrungrad:'empty'
+  bumrungrad:'empty'*/
 };
+var contentForInfoWindows = [];
 function loadData (){
   for (var venue in venues) {
     var ID = venues[venue];
-    console.log (ID);
-    var URL = 'https://api.foursquare.com/v2/venues/' + ID + '?&client_id=1ZZZKPHYYJEXJ13CLALWGP35AWD0LJFHFB3Z5DABSCFPXWVY&client_secret=MLYWIJVO3CA2HKSQ1AUVSVLV2IQTV3X3AFCBIU0QZFC3O41C&v=20140806&m=foursquare';
+    var URL = 'https://api.foursquare.com/v2/venues/' + 
+              ID + 
+              '?&client_id=1ZZZKPHYYJEXJ13CLALWGP35AWD0LJFHFB3Z5DABSCFPXWVY' +
+              '&client_secret=MLYWIJVO3CA2HKSQ1AUVSVLV2IQTV3X3AFCBIU0QZFC3O41C&v=20140806&m=foursquare';
   $.ajax(
       {
         url: URL,
         dataType: 'jsonp',
         success: function(response){
-          console.log(response);
+          var venue = response.response.venue
+          var name = venue.name;
+          var lat = venue.location.lat;
+          var lng = venue.location.lng;
+          var photopre = venue.photos.groups[0].items[1].prefix;
+          var photosuf = venue.photos.groups[0].items[1].suffix;
+          var photo = photopre + 175 + photosuf;
+          var url = venue.url;
+          var content = '<h3>'
+                        + name + '</h3>'
+                        + '<img src='
+                        + photo
+                        + '>'
+                        + '<br>'
+                        + '<a href="'
+                        + url
+                        + '">Visit Site'
+                        +'</a><br>' ;
+          contentForInfoWindows.push(content);
+          console.log(contentForInfoWindows[0]);
         }
     });
   };
   
 }
-  
-  
 
 loadData();
+
 var defMapOptions = {
   zoom: 16,
   center: new google.maps.LatLng(13.66448,100.66160)
@@ -54,31 +77,7 @@ content.appendChild(htmlContent)
       content: content,
       maxWidth: 200
   });
- 
-// function to add people to map
-var Person = function (name, title, lat, long) {
- this.name = ko.observable(name);
- this.title = ko.observable(title);
- this.lat = ko.observable(lat);
- this.long = ko.observable(long);
- this.nameTitle = ko.computed(function() {
- return this.name() + " " + this.title();
- }, this);
- };
- //empty array to hold markers
- var markers = [];
-//function to add a marker to the markers array
-var addMarker = function (lat, long, title, html) {
-    this.marker = new google.maps.Marker({
-    position: new google.maps.LatLng(lat,long),
-    map: map,
-    title: title,
-    content:''
 
-  });
-    
-    markers.push(this.marker);
- };
 //put all markers on map with interactive info windows that open and bounce when clicked and
 //close and stop bouncing when clicked or closed
 //TODO: modify animation so that when a marker is clicked..all other markers stop bouncing save the one clicked
@@ -87,7 +86,7 @@ var addMarker = function (lat, long, title, html) {
   for (var i = 0; i < markers.length; i++) {
       var mark = markers[i];
       mark.setMap(map);
-//listener to add the bounce animation to each marker..each marker bounces twice and then stops
+//listener to add the bounce animation to each marker..each marker bounces 2-3 times and then stops
       google.maps.event.addListener(mark, 'click', (function(markcopy) {
           return function() {  
               if (markcopy.getAnimation() != null) {
@@ -132,10 +131,36 @@ function deleteMarkers() {
   clearMarkers();
   markers = [];
 };
+ 
+// function to add people to map
+var Person = function (name, title, lat, long) {
+ this.name = ko.observable(name);
+ this.title = ko.observable(title);
+ this.lat = ko.observable(lat);
+ this.long = ko.observable(long);
+ this.nameTitle = ko.computed(function() {
+ return this.name() + " " + this.title();
+ }, this);
+ };
+ //empty array to hold markers
+ var markers = [];
+//function to add a marker to the markers array
+var addMarker = function (lat, long, title, html) {
+    this.marker = new google.maps.Marker({
+    position: new google.maps.LatLng(lat,long),
+    map: map,
+    title: title,
+    content:''
+
+  });
+    
+    markers.push(this.marker);
+ };
 //an array of people and their coordinates that will go on the map
 var Folks = [ new Person("Tony R - ", "HS/Computers", 13.665189, 100.664765),
  new Person("Allan J - ", "MS/Math", 13.665308, 100.664416)
 ];
+
 
 var mapViewModel = function () {
 	var self = this;
