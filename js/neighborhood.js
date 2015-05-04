@@ -22,8 +22,8 @@ function loadData (){
     var ID = venues[venue];
     var URL = 'https://api.foursquare.com/v2/venues/' + 
               ID + 
-              '?&client_id=DDDDDDDD' +
-              '&client_secret=DDDDDDDDDDD&v=20140806&m=foursquare';
+              '?&client_id=1ZZZKPHYYJEXJ13CLALWGP35AWD0LJFHFB3Z5DABSCFPXWVY' +
+              '&client_secret=MLYWIJVO3CA2HKSQ1AUVSVLV2IQTV3X3AFCBIU0QZFC3O41C&v=20140806&m=foursquare';
   $.ajax(
       {
         url: URL,
