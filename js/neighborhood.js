@@ -1,5 +1,4 @@
 //TODO: fill in rest of IDs and somehow sync them into the info windows of each created marker
-//must also figure out how to create venues...with or without Person function??
 var venues = {
   foodland: '4b45bb48f964a520aa0f26e3',
   central: '4b529cbdf964a520e28327e3'
@@ -36,7 +35,7 @@ function loadData (){
           var lng = venue.location.lng;
           var photopre = venue.photos.groups[0].items[1].prefix;
           var photosuf = venue.photos.groups[0].items[1].suffix;
-          var photo = photopre + 175 + photosuf;
+          var photo = photopre + 125 + photosuf;
           var url = venue.url;
           var content = '<h3>'
                         + name + '</h3>'
@@ -48,8 +47,9 @@ function loadData (){
                         + url
                         + '">Visit Site'
                         +'</a><br>' ;
-          contentForInfoWindows.push(content);
-          console.log(contentForInfoWindows[0]);
+          locations.push(new Place(name, "", lat, lng, photo, url));
+          console.log(photo);
+          
         }
     });
   };
@@ -59,7 +59,7 @@ function loadData (){
 loadData();
 
 var defMapOptions = {
-  zoom: 16,
+  zoom: 10,
   center: new google.maps.LatLng(13.66448,100.66160)
 }
 var map = new google.maps.Map(document.getElementById('map-canvas'), defMapOptions);
@@ -102,7 +102,7 @@ content.appendChild(htmlContent)
       google.maps.event.addListener(mark, 'click', (function(markcopy) {
         
           return function() {
-          infowindow.setContent('<h3>' + markcopy.title + '</h3>');
+          infowindow.setContent('<h4>' + markcopy.content + '</h4>');
           infowindow.open(map, this);
         };
    
@@ -132,15 +132,22 @@ function deleteMarkers() {
   markers = [];
 };
  
-// function to add people to map
-var Person = function (name, title, lat, long) {
+// function to add places to map
+var Place = function (name, title, lat, long, img, url) {
  this.name = ko.observable(name);
  this.title = ko.observable(title);
  this.lat = ko.observable(lat);
  this.long = ko.observable(long);
+ this.img = ko.observable(img);
+ this.url = ko.observable(url);
  this.nameTitle = ko.computed(function() {
  return this.name() + " " + this.title();
  }, this);
+ this.htmlImg = ko.computed(function() {
+  return '<h3>'+ this.name() + this.title() + '</h3>' + '<img src=' + this.img() + '>' 
+                + '<br>' + '<a href="' + this.url() + '">Visit Site' + '</a><br>'
+ }, this);
+ 
  };
  //empty array to hold markers
  var markers = [];
@@ -150,48 +157,47 @@ var addMarker = function (lat, long, title, html) {
     position: new google.maps.LatLng(lat,long),
     map: map,
     title: title,
-    content:''
+    content: html
 
   });
     
     markers.push(this.marker);
  };
-//an array of people and their coordinates that will go on the map
-var Folks = [ new Person("Tony R - ", "HS/Computers", 13.665189, 100.664765),
- new Person("Allan J - ", "MS/Math", 13.665308, 100.664416)
+//an array of places and their coordinates that will go on the map
+var locations = [ new Place("Tony R - ", "HS/Computers", 13.665189, 100.664765, "images/tony.jpg", 'http://ics.ac.th/'),
+              new Place("Allan J - ", "MS/Math", 13.665308, 100.664416, "images/allen.jpg",'http://ics.ac.th/')
 ];
-
 
 var mapViewModel = function () {
 	var self = this;
-  //populate the below array with the people from the "Folks" array
-  self.people = ko.observableArray(Folks.slice(0));
+  //populate the below array with the places from the "locations" array
+  self.places = ko.observableArray(locations.slice(0));
   //the below is bound to the input markup
     self.filter = ko.observable('');
- //temporary array used to house people/places from search input and then repopulate the self.people array
+ //temporary array used to house places/places from search input and then repopulate the self.places array
     self.temp = ko.observableArray()
   
-  //adds markers to map by looping through the observable array of self.people
-  self.personMarkers = function() {
-    for (var i = 0; i < self.people().length; i++) {
-      addMarker(self.people()[i].lat(), self.people()[i].long(), self.people()[i].nameTitle());
+  //adds markers to map by looping through the observable array of self.places
+  self.placeMarkers = function() {
+    for (var i = 0; i < self.places().length; i++) {
+      addMarker(self.places()[i].lat(), self.places()[i].long(), self.places()[i].nameTitle(), self.places()[i].htmlImg());
     };
     showMarkers();
   };
-  self.personMarkers();
+  self.placeMarkers();
 //filters the list view and displays only the markers that match the search query
   self.search = function () {
       var filter = self.filter();
         deleteMarkers();
-        self.people.removeAll();
+        self.places.removeAll();
      
-        for (var i = 0; i < Folks.length; i++) {
-          if (Folks[i].nameTitle().toLowerCase().indexOf(filter.toLowerCase()) >= 0 ) {
-                self.temp().push(Folks[i]);    
+        for (var i = 0; i < locations.length; i++) {
+          if (locations[i].nameTitle().toLowerCase().indexOf(filter.toLowerCase()) >= 0 ) {
+                self.temp().push(locations[i]);    
               };
             };
-      self.people(self.temp());
-      self.personMarkers();
+      self.places(self.temp());
+      self.placeMarkers();
       
   };
 
