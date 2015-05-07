@@ -7,20 +7,23 @@ setFocus();
 //TODO: fill in rest of IDs and somehow sync them into the info windows of each created marker
 var venues = {
   foodland: '4b45bb48f964a520aa0f26e3',
-  central: '4b529cbdf964a520e28327e3'
- /* mega:'empty',
-  paradise:'empty',
-  seacon:'empty',
-  dusit:'empty',
-  yellow:'empty',
-  lotus:'empty',
-  bigc:'empty',
-  mackro:'empty',
-  thainakarin:'empty',
-  sikarin:'empty',
-  samitivejsuk:'empty',
-  samitivejsrin:'empty',
-  bumrungrad:'empty'*/
+  central: '4b529cbdf964a520e28327e3',
+  mega:'4f98ca42e4b028100302dbde',
+  paradise:'4ba5c57cf964a520482139e3',
+  seacon:'4bb9a4a198c7ef3b61373202',
+  dusit:'4bc402c8f8219c7411eab610',
+  yellow:'4c9ec48203133704338e6cd5',
+  lotus:'4bf90dc7508c0f476c0b3f31',
+  bigc:'4e33b40be4cdf7a42ca9cd33',
+  kingPark:'4b6d7a63f964a52025772ce3',
+  mackro:'4b6f9cb5f964a520e1f72ce3',
+  thainakarin:'4e0abe0718a889c5fe8dee2b',
+  sikarin:'4b6526aff964a52081e62ae3',
+  samitivejsuk:'4b0d43fff964a520684523e3',
+  samitivejsrin:'4b5d7d44f964a520b15e29e3',
+  bumrungrad:'4b6a2465f964a520f6c92be3',
+  suvarnabumi:'4af833a6f964a5205a0b22e3',
+  donmuang:'4b2df07cf964a5201bdc24e3'
 };
 
 var defMapOptions = {
@@ -155,12 +158,21 @@ var mapViewModel = function () {
           url: URL,
           dataType: 'jsonp',
           success: function(response){
+            //console.log(JSON.stringify(response));
             var venue = response.response.venue
             var name = venue.name;
             var lat = venue.location.lat;
             var lng = venue.location.lng;
             var photopre = venue.photos.groups[0].items[1].prefix;
             var photosuf = venue.photos.groups[0].items[1].suffix;
+            console.log(typeof photopre);
+            if (typeof photopre === 'undefined') {
+              var photopre = "can't show picture";
+            } else if (typeof photosuf === 'undefined') {
+              var photosuf = "can't show picture";
+            } else {
+              console.log('nothing');
+            }
             var photo = photopre + 125 + photosuf;
             var url = venue.url;
             var content = '<h3>'
