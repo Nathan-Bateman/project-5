@@ -11,3 +11,17 @@ http://stackoverflow.com/questions/6515250/one-marker-animation-at-a-time-google
 http://jsfiddle.net/RASG/X5mhL/
 https://groups.google.com/forum/#!topic/google-maps-js-api-v3/_kmIxA7ZZcM
 http://jsfiddle.net/RASG/X5mhL/
+https://developers.google.com/maps/documentation/javascript/examples/event-domListener
+http://stackoverflow.com/questions/3059044/google-maps-js-api-v3-simple-multiple-marker-example
+https://www.youtube.com/watch?v=pe6keTE9LbE
+https://www.youtube.com/watch?v=b46Jqm3v09c
+
+
+
+
+4 SQUARE API INFO
+
+Client id
+1ZZZKPHYYJEXJ13CLALWGP35AWD0LJFHFB3Z5DABSCFPXWVY
+Client secret
+MLYWIJVO3CA2HKSQ1AUVSVLV2IQTV3X3AFCBIU0QZFC3O41C

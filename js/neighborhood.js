@@ -1,3 +1,9 @@
+//make cursor appear in search bar automatically
+var setFocus = function() {
+  var input = document.getElementById ("theFieldID");
+  input.focus ();
+  };
+setFocus();
 //TODO: fill in rest of IDs and somehow sync them into the info windows of each created marker
 var venues = {
   foodland: '4b45bb48f964a520aa0f26e3',
@@ -16,47 +22,6 @@ var venues = {
   samitivejsrin:'empty',
   bumrungrad:'empty'*/
 };
-var contentForInfoWindows = [];
-function loadData (){
-  for (var venue in venues) {
-    var ID = venues[venue];
-    var URL = 'https://api.foursquare.com/v2/venues/' + 
-              ID + 
-              '?&client_id=1ZZZKPHYYJEXJ13CLALWGP35AWD0LJFHFB3Z5DABSCFPXWVY' +
-              '&client_secret=MLYWIJVO3CA2HKSQ1AUVSVLV2IQTV3X3AFCBIU0QZFC3O41C&v=20140806&m=foursquare';
-  $.ajax(
-      {
-        url: URL,
-        dataType: 'jsonp',
-        success: function(response){
-          var venue = response.response.venue
-          var name = venue.name;
-          var lat = venue.location.lat;
-          var lng = venue.location.lng;
-          var photopre = venue.photos.groups[0].items[1].prefix;
-          var photosuf = venue.photos.groups[0].items[1].suffix;
-          var photo = photopre + 125 + photosuf;
-          var url = venue.url;
-          var content = '<h3>'
-                        + name + '</h3>'
-                        + '<img src='
-                        + photo
-                        + '>'
-                        + '<br>'
-                        + '<a href="'
-                        + url
-                        + '">Visit Site'
-                        +'</a><br>' ;
-          locations.push(new Place(name, "", lat, lng, photo, url));
-          console.log(photo);
-          
-        }
-    });
-  };
-  
-}
-
-loadData();
 
 var defMapOptions = {
   zoom: 10,
@@ -70,8 +35,6 @@ function initialize() {
  google.maps.event.addDomListener(window, 'load', initialize);
 //default content for info windows
 var content = document.createElement("DIV");
-var htmlContent = document.createElement("DIV");
-content.appendChild(htmlContent)
 // variable that is the one and only info window of the page..content changes upon a click event
   var infowindow = new google.maps.InfoWindow({
       content: content,
@@ -170,29 +133,74 @@ var locations = [ new Place("Tony R - ", "HS/Computers", 13.665189, 100.664765, 
 
 var mapViewModel = function () {
 	var self = this;
-  //populate the below array with the places from the "locations" array
-  self.places = ko.observableArray(locations.slice(0));
-  //the below is bound to the input markup
-    self.filter = ko.observable('');
- //temporary array used to house places/places from search input and then repopulate the self.places array
-    self.temp = ko.observableArray()
-  
-  //adds markers to map by looping through the observable array of self.places
-  self.placeMarkers = function() {
-    for (var i = 0; i < self.places().length; i++) {
-      addMarker(self.places()[i].lat(), self.places()[i].long(), self.places()[i].nameTitle(), self.places()[i].htmlImg());
+  var loadData = function (){
+    //empty observable array for all places on the map
+    self.places = ko.observableArray();
+    //adds markers to map by looping through the observable array of self.places
+    self.placeMarkers = function() {
+      for (var i = 0; i < self.places().length; i++) {
+        addMarker(self.places()[i].lat(), self.places()[i].long(), self.places()[i].nameTitle(), self.places()[i].htmlImg());
+        };
+      showMarkers();
     };
-    showMarkers();
-  };
-  self.placeMarkers();
-//filters the list view and displays only the markers that match the search query
+    //iterates through the key values in the venues object to collect data from foursquare
+    for (var venue in venues) {
+      var ID = venues[venue];
+      var URL = 'https://api.foursquare.com/v2/venues/' + 
+                ID + 
+                '?&client_id=1ZZZKPHYYJEXJ13CLALWGP35AWD0LJFHFB3Z5DABSCFPXWVY' +
+                '&client_secret=MLYWIJVO3CA2HKSQ1AUVSVLV2IQTV3X3AFCBIU0QZFC3O41C&v=20140806&m=foursquare';
+    $.ajax(
+        {
+          url: URL,
+          dataType: 'jsonp',
+          success: function(response){
+            var venue = response.response.venue
+            var name = venue.name;
+            var lat = venue.location.lat;
+            var lng = venue.location.lng;
+            var photopre = venue.photos.groups[0].items[1].prefix;
+            var photosuf = venue.photos.groups[0].items[1].suffix;
+            var photo = photopre + 125 + photosuf;
+            var url = venue.url;
+            var content = '<h3>'
+                          + name + '</h3>'
+                          + '<img src='
+                          + photo
+                          + '>'
+                          + '<br>'
+                          + '<a href="'
+                          + url
+                          + '">Visit Site'
+                          +'</a><br>';
+            locations.push(new Place(name, "", lat, lng, photo, url));
+            //populate the below array with the places from the "locations" array
+            self.places(locations.slice(0));
+            //places all markers on the page
+            self.placeMarkers();
+
+          }
+      });
+
+    };
+  
+  }
+//calls the function "loadData" which contains the ajax call and 
+loadData();
+  
+    //the below is bound to the input markup
+    self.filter = ko.observable('');
+    //temporary array used to house places from search input and then repopulate the self.places array
+    self.temp = ko.observableArray();
+
+  //filters the list view and displays only the markers that match the search query
   self.search = function () {
       var filter = self.filter();
         deleteMarkers();
         self.places.removeAll();
      
         for (var i = 0; i < locations.length; i++) {
-          if (locations[i].nameTitle().toLowerCase().indexOf(filter.toLowerCase()) >= 0 ) {
+          if ((locations)[i].nameTitle().toLowerCase().indexOf(filter.toLowerCase()) >= 0 ) {
                 self.temp().push(locations[i]);    
               };
             };
@@ -217,4 +225,5 @@ self.listClick = function(place) {
 };
 
 ko.applyBindings(new mapViewModel());
+
 
