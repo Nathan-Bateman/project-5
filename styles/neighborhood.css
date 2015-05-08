@@ -1,4 +1,11 @@
-html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
+html, body, #map-canvas { height: 100%; margin: 0; padding: 0; z-index: 0; }
+#container img{
+    max-width: none;
+    background: rgba(255, 255, 255, 0.8);
+}
+#map-canvas img{
+    max-width: none;
+}
 .search {
 	position: fixed;
 	margin: 8em;
@@ -9,10 +16,16 @@ html, body, #map-canvas { height: 100%; margin: 0; padding: 0;}
 	z-index: 0;
 	list-style-type: none;
 	min-width: 25%;
+	background-color: transparent;
 }
 #list-view {
 	list-style-type: none;
 	padding: .8em;
 	cursor: pointer;
+	background-color: transparent;
 
+}
+a {
+  color: blue;
+  text-decoration: none;
 }

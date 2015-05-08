@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+<link rel='stylesheet' href='styles/bootstrap.css'/>
 <link rel='stylesheet' href='styles/neighborhood.css'/>
 <script src="https://maps.googleapis.com/maps/api/js?"></script>
 <script src="js/knockout-3.3.0.js"></script>
@@ -14,12 +15,14 @@
 </form>
 
   	<div id='BV-folks'>
+  		
   	 <ul id='list-view' data-bind="foreach: places">
-  	 	<li> <span data-bind="text: nameTitle, click: $parent.listClick"></span></li>
+  	 	<li class="btn btn-default btn-block" > <span data-bind="text: nameTitle, click: $parent.listClick"></span></li>
 </ul>
 </div>
 	
 <div id="map-canvas"></div>
+
 
 <script src="js/neighborhood.js"></script>
   </body>

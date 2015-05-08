@@ -110,7 +110,7 @@ var Place = function (name, title, lat, long, img, url) {
  return this.name() + " " + this.title();
  }, this);
  this.htmlImg = ko.computed(function() {
-  return '<h3>'+ this.name() + this.title() + '</h3>' + '<img src=' + this.img() + '>' 
+  return '<h4>'+ this.name() + this.title() + '</h4>' + '<img src=' + this.img() + '>' 
                 + '<br>' + '<a href="' + this.url() + '">Visit Site' + '</a><br>'
  }, this);
  
@@ -161,27 +161,44 @@ var mapViewModel = function () {
             //console.log(JSON.stringify(response));
             var venue = response.response.venue
             var name = venue.name;
+            console.log(name);
             var lat = venue.location.lat;
             var lng = venue.location.lng;
-            var photopre = venue.photos.groups[0].items[1].prefix;
-            var photosuf = venue.photos.groups[0].items[1].suffix;
-            console.log(typeof photopre);
-            if (typeof photopre === 'undefined') {
-              var photopre = "can't show picture";
-            } else if (typeof photosuf === 'undefined') {
-              var photosuf = "can't show picture";
+            if (typeof venue.photos.groups[0] === 'undefined') {
+              var photo = "images/photounavailable.png";;
             } else {
-              console.log('nothing');
+              var photopre = venue.photos.groups[0].items[1].prefix;
+              var photosuf = venue.photos.groups[0].items[1].suffix; 
+              var photo = photopre + 125 + photosuf;
+            };
+            if (typeof venue.url === 'undefined') {
+                    switch (name) {
+                        case "Thainakarin| Medicine Center":
+                          var url = 'http://www.thainakarin.co.th/en/index.php';
+                        case 'โรงพยาบาลศิครินทร์ (Sikarin Hospital)':
+                          var url = 'http://www.sikarin.com/en';
+                        case 'โรงพยาบาลสมิติเวช สุขุมวิท (Samitivej Sukhumvit Hospital)':
+                          var url = 'http://www.samitivejhospitals.com/sukhumvit/';
+                        case 'โรงพยาบาลสมิติเวช ศรีนครินทร์ (Samitivej Srinakarin Hospital)':
+                          var url = 'http://www.samitivejhospitals.com/srinakarin/';
+                        case 'Bumrungrad International Clinic Building':
+                          var url = 'https://www.bumrungrad.com/thailandhospital';
+                  default:
+                    console.log('nothing');
+              }
+            } else {
+                  var url = venue.url;
             }
-            var photo = photopre + 125 + photosuf;
-            var url = venue.url;
-            var content = '<h3>'
-                          + name + '</h3>'
+
+            var content = '<h4>'
+                          + name + '</h4>'
                           + '<img src='
                           + photo
                           + '>'
                           + '<br>'
-                          + '<a href="'
+                          + '<a class=' 
+                          + 'website' 
+                          + 'href="'
                           + url
                           + '">Visit Site'
                           +'</a><br>';
