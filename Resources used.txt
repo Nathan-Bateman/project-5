@@ -16,6 +16,7 @@ http://stackoverflow.com/questions/3059044/google-maps-js-api-v3-simple-multiple
 https://www.youtube.com/watch?v=pe6keTE9LbE
 https://www.youtube.com/watch?v=b46Jqm3v09c
 http://stackoverflow.com/questions/4005614/elseif-syntax-in-javascript
+https://css-tricks.com/video-screencasts/40-how-z-index-works/
 
 
 

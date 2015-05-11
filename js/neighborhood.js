@@ -136,6 +136,12 @@ var locations = [ new Place("Tony R - ", "HS/Computers", 13.665189, 100.664765, 
 
 var mapViewModel = function () {
 	var self = this;
+  self.showMenu = ko.observable(false);
+
+  self.toggleMenu = function () {
+    $( "#BV-folks" ).toggle('slow');
+    $( ".list-view" ).toggle('slow');
+  }
   var loadData = function (){
     //empty observable array for all places on the map
     self.places = ko.observableArray();
@@ -161,7 +167,6 @@ var mapViewModel = function () {
             //console.log(JSON.stringify(response));
             var venue = response.response.venue
             var name = venue.name;
-            console.log(name);
             var lat = venue.location.lat;
             var lng = venue.location.lng;
             if (typeof venue.photos.groups[0] === 'undefined') {

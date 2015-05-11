@@ -6,25 +6,30 @@
 <link rel='stylesheet' href='styles/bootstrap.css'/>
 <link rel='stylesheet' href='styles/neighborhood.css'/>
 <script src="https://maps.googleapis.com/maps/api/js?"></script>
+
 <script src="js/knockout-3.3.0.js"></script>
 <script src="js/jQuery.js"></script>
   </head>
   <body>
+
 <form id='theFormID' data-bind="submit: search">
 <input id='theFieldID' class='search' placeholder="Search…" type="search" data-bind='textInput: filter, event: { keyup: search }' autocomplete="off">
 </form>
-
-  	<div id='BV-folks'>
-  		
-  	 <ul id='list-view' data-bind="foreach: places">
-  	 	<li class="btn btn-default btn-block" > <span data-bind="text: nameTitle, click: $parent.listClick"></span></li>
-</ul>
+<div class="mainbutton">
+<button type="button" class="btn btn-primary" data-bind="click: toggleMenu">Venues</button>
 </div>
-	
-<div id="map-canvas"></div>
+  	<div id='BV-folks' data-bind='visible:showMenu'>
+  	 <div id='list-view' class="list-group" data-bind="foreach: places">
+  	 	<a href="#" class="list-group-item"> <span data-bind="text: nameTitle, click: $parent.listClick"></span></a>
+</div>
+</div>
+<div id="map-canvas">	
+</div>
 
 
 <script src="js/neighborhood.js"></script>
+<script src="js/bootstrap.js"></script>
   </body>
 
 </html>
+<ul id='list-view' class='dropdown-menu' role='menu' data-bind="foreach: places">
