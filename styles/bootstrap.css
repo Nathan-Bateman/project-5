@@ -1581,6 +1581,7 @@ pre code {
   margin-left: auto;
   padding-left: 15px;
   padding-right: 15px;
+
 }
 @media (min-width: 768px) {
   .container {
@@ -1600,8 +1601,8 @@ pre code {
 .container-fluid {
   margin-right: auto;
   margin-left: auto;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: none;
+  padding-right: none;
 }
 .row {
   margin-left: -15px;
@@ -3736,6 +3737,7 @@ tbody.collapse.in {
   float: left;
   width: 100%;
   margin-bottom: 0;
+  background-color: transparent;
 }
 .input-group-lg > .form-control,
 .input-group-lg > .input-group-addon,

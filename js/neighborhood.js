@@ -1,10 +1,13 @@
+var $body = $('body');
+var $mapDiv = $('#map-canvas');
+var $myModal = $('#map-canvas');
 //make cursor appear in search bar automatically
 var setFocus = function() {
   var input = document.getElementById ("theFieldID");
   input.focus ();
   };
 setFocus();
-//TODO: fill in rest of IDs and somehow sync them into the info windows of each created marker
+//list of places with their foursquare IDs
 var venues = {
   foodland: '4b45bb48f964a520aa0f26e3',
   central: '4b529cbdf964a520e28327e3',
@@ -137,12 +140,28 @@ var locations = [ new Place("Tony R - ", "HS/Computers", 13.665189, 100.664765, 
 var mapViewModel = function () {
 	var self = this;
   self.showMenu = ko.observable(false);
+  self.errorMessage = ko.observable('<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
+                          '<div class="modal-dialog">' +
+                          '<div class="modal-content">'+
+                          '<div class="modal-header">' +
+                          '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
+                          '<h4 class="modal-title" id="myModalLabel">Modal title</h4>' +
+                          '</div>' +
+                          '<div class="modal-body">An Error Occurred' +
+                          '</div>' +
+                          '<div class="modal-footer">' +
+                          '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
+                          '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
+                          '</div>' +
+                          '</div>' +
+                          '</div>');
 
   self.toggleMenu = function () {
     $( "#BV-folks" ).toggle('slow');
     $( ".list-view" ).toggle('slow');
   }
   var loadData = function (){
+    
     //empty observable array for all places on the map
     self.places = ko.observableArray();
     //adds markers to map by looping through the observable array of self.places
@@ -213,6 +232,9 @@ var mapViewModel = function () {
             //places all markers on the page
             self.placeMarkers();
 
+          },
+          error: function (){
+            $myModal.modal('show');
           }
       });
 
