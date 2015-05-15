@@ -37,12 +37,25 @@
 <!--google map id-->	
 <div id="map-canvas">	
 </div>
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<span data-bind='text: errorMessage'></span>
-</div>
 
 <!--closing of container div-->
 </div>
+<div id="myModal" class="modal fade">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Unable to Load FourSquare Locations</h4>
+                </div>
+                <div class="modal-body">
+                    <p>please check the internet connection</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <script src="js/neighborhood.js"></script>
 <script src="js/bootstrap.js"></script>

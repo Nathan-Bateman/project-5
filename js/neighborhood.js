@@ -1,6 +1,6 @@
 var $body = $('body');
 var $mapDiv = $('#map-canvas');
-var $myModal = $('#map-canvas');
+var $myModal = $('#myModal');
 //make cursor appear in search bar automatically
 var setFocus = function() {
   var input = document.getElementById ("theFieldID");
@@ -49,7 +49,6 @@ var content = document.createElement("DIV");
 
 //put all markers on map with interactive info windows that open and bounce when clicked and
 //close and stop bouncing when clicked or closed
-//TODO: modify animation so that when a marker is clicked..all other markers stop bouncing save the one clicked
  function setAllMap(map) {
   
   for (var i = 0; i < markers.length; i++) {
@@ -140,21 +139,7 @@ var locations = [ new Place("Tony R - ", "HS/Computers", 13.665189, 100.664765, 
 var mapViewModel = function () {
 	var self = this;
   self.showMenu = ko.observable(false);
-  self.errorMessage = ko.observable('<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">' +
-                          '<div class="modal-dialog">' +
-                          '<div class="modal-content">'+
-                          '<div class="modal-header">' +
-                          '<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>' +
-                          '<h4 class="modal-title" id="myModalLabel">Modal title</h4>' +
-                          '</div>' +
-                          '<div class="modal-body">An Error Occurred' +
-                          '</div>' +
-                          '<div class="modal-footer">' +
-                          '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
-                          '<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
-                          '</div>' +
-                          '</div>' +
-                          '</div>');
+  self.errorMessage = ko.observable('<p> WHAT!</p>');
 
   self.toggleMenu = function () {
     $( "#BV-folks" ).toggle('slow');
@@ -241,7 +226,7 @@ var mapViewModel = function () {
     };
   
   }
-//calls the function "loadData" which contains the ajax call and 
+//calls the function "loadData" which contains the ajax call
 loadData();
   
     //the below is bound to the input markup
@@ -259,6 +244,9 @@ loadData();
           if ((locations)[i].nameTitle().toLowerCase().indexOf(filter.toLowerCase()) >= 0 ) {
                 self.temp().push(locations[i]);    
               };
+            };
+            if (self.temp().length === 0) {
+              self.places.push(new Place('No items match your search', "", '', '', '', ''));
             };
       self.places(self.temp());
       self.placeMarkers();

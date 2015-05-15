@@ -4,10 +4,7 @@ html, body, #map-canvas { height: 100%; width: 100%; margin: 0; padding: 0; z-in
 	height:100%;
 	width: 100%;
 }
-.myModal {
-	position: relative;
-	z-index: 400;
-}
+
 #theFormID {
 	position: fixed;
 	z-index: 5;
