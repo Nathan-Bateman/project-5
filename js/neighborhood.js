@@ -28,7 +28,7 @@ var venues = {
   suvarnabumi:'4af833a6f964a5205a0b22e3',
   donmuang:'4b2df07cf964a5201bdc24e3'
 };
-
+//parameters for initial map load
 var defMapOptions = {
   zoom: 10,
   center: new google.maps.LatLng(13.66448,100.66160)
@@ -131,20 +131,22 @@ var addMarker = function (lat, long, title, html) {
     
     markers.push(this.marker);
  };
-//an array of places and their coordinates that will go on the map
+//an array of places/people and their coordinates that will go on the map
 var locations = [ new Place("Tony R - ", "HS/Computers", 13.665189, 100.664765, "images/tony.jpg", 'http://ics.ac.th/'),
               new Place("Allan J - ", "MS/Math", 13.665308, 100.664416, "images/allen.jpg",'http://ics.ac.th/')
 ];
 
 var mapViewModel = function () {
 	var self = this;
+  //observable that hides menu by default by working with KO's visible binding
   self.showMenu = ko.observable(false);
-  self.errorMessage = ko.observable('<p> WHAT!</p>');
-
+  //jQuery's toggle function to switch list view on and off depending on user behavior
   self.toggleMenu = function () {
     $( "#BV-folks" ).toggle('slow');
     $( ".list-view" ).toggle('slow');
   }
+  //function containing ajax call to foursquare server as well as other functions related to the data to
+  //be retrieved fromt he server
   var loadData = function (){
     
     //empty observable array for all places on the map
@@ -169,10 +171,13 @@ var mapViewModel = function () {
           dataType: 'jsonp',
           success: function(response){
             //console.log(JSON.stringify(response));
+            //the above comment is to display the object in plain JSON format
+            //variables below access various aspects of the returned object(s)
             var venue = response.response.venue
             var name = venue.name;
             var lat = venue.location.lat;
             var lng = venue.location.lng;
+            //testing to see if item has picture or not and if not supplying a default
             if (typeof venue.photos.groups[0] === 'undefined') {
               var photo = "images/photounavailable.png";;
             } else {
@@ -180,6 +185,7 @@ var mapViewModel = function () {
               var photosuf = venue.photos.groups[0].items[1].suffix; 
               var photo = photopre + 125 + photosuf;
             };
+            //data from returned hospitals often did not have url so this supplies them manually
             if (typeof venue.url === 'undefined') {
                     switch (name) {
                         case "Thainakarin| Medicine Center":
@@ -198,7 +204,7 @@ var mapViewModel = function () {
             } else {
                   var url = venue.url;
             }
-
+            //html for the information window
             var content = '<h4>'
                           + name + '</h4>'
                           + '<img src='
@@ -216,7 +222,7 @@ var mapViewModel = function () {
             self.places(locations.slice(0));
             //places all markers on the page
             self.placeMarkers();
-
+            //below handles the error incase of a failed call
           },
           error: function (){
             $myModal.modal('show');
@@ -234,7 +240,8 @@ loadData();
     //temporary array used to house places from search input and then repopulate the self.places array
     self.temp = ko.observableArray();
 
-  //filters the list view and displays only the markers that match the search query
+  //filters the list view and displays only the markers that match the search query or the error message if 
+  //nothing matches
   self.search = function () {
       var filter = self.filter();
         deleteMarkers();
