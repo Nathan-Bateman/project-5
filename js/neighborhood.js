@@ -170,9 +170,6 @@ var mapViewModel = function () {
           url: URL,
           dataType: 'jsonp',
           success: function(response){
-            //console.log(JSON.stringify(response));
-            //the above comment is to display the object in plain JSON format
-            //variables below access various aspects of the returned object(s)
             var venue = response.response.venue
             var name = venue.name;
             var lat = venue.location.lat;
