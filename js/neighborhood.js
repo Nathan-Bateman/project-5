@@ -26,7 +26,8 @@ var venues = {
   samitivejsrin:'4b5d7d44f964a520b15e29e3',
   bumrungrad:'4b6a2465f964a520f6c92be3',
   suvarnabumi:'4af833a6f964a5205a0b22e3',
-  donmuang:'4b2df07cf964a5201bdc24e3'
+  donmuang:'4b2df07cf964a5201bdc24e3',
+  ics:'4b975803f964a5204c0035e3'
 };
 //parameters for initial map load
 var defMapOptions = {
@@ -195,6 +196,8 @@ var mapViewModel = function () {
                           var url = 'http://www.samitivejhospitals.com/srinakarin/';
                         case 'Bumrungrad International Clinic Building':
                           var url = 'https://www.bumrungrad.com/thailandhospital';
+                        case 'International Community School (ICS) (โรงเรียนประชาคมนานาชาติ)':
+                          var url = 'http://ics.ac.th/';
                   default:
                     console.log('nothing');
               }
