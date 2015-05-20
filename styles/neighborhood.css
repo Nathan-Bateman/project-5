@@ -13,6 +13,12 @@ html, body, #map-canvas { height: 100%; width: 100%; margin: 0; padding: 0; z-in
 #theFieldID {
 	background-color: #ffffff;
 }
+
+@media (max-width: 40em) {
+.search {
+visibility:hidden;
+}
+}
 /*styles for making sure map has functioning z index as well as no white space from the container div*/
 #map-canvas img{
     max-width: none;
