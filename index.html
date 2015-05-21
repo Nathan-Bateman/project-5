@@ -16,8 +16,8 @@
 <div class='row'>
 	<!--begins column div-->
 <div class='col-md-4'>
-<form id='theFormID' class='input-group'>
-<input id='theFieldID' class='search form-control input-group col-sm-2' placeholder="Search…" type="search" data-bind='textInput: filter, event: { keyup: search }' autocomplete="off">
+<form id='theFormID' class='input-group form'>
+<input id='theFieldID' class='search form-control field input-group col-sm-2' placeholder="Search…" type="search" data-bind='textInput: filter, event: { keyup: search }' autocomplete="off">
 </form>
 <!--closes column div-->
 </div>
@@ -28,8 +28,8 @@
 <button type="button" class="btn btn-primary" data-bind="click: toggleMenu">Venues</button>
 </div>
 <!--ends the div for 'venues' and begins divs for BV-Folks and list-view-->
-  	<div id='BV-folks' data-bind='visible:showMenu'>
-  	 <div id='list-view' class="list-group" data-bind="foreach: places">
+  	<div class='BV-folks' data-bind='visible:showMenu'>
+  	 <div class="list-group list-view" data-bind="foreach: places">
   	 	<a href="#" class="list-group-item"> <span data-bind="text: nameTitle, click: $parent.listClick"></span></a>
 </div>
 </div>

@@ -1,23 +1,31 @@
-html, body, #map-canvas { height: 100%; width: 100%; margin: 0; padding: 0; z-index: 0; }
+html, 
+body, 
+#map-canvas {
+	height: 100%; 
+	width: 100%; 
+	margin: 0; 
+	padding: 0; 
+	z-index: 0;
+}
 /*styles for setting the container div to the same as the map canvas height and width*/
 .container-fluid {
 	height:100%;
 	width: 100%;
 }
 /*using fixed positioning so that I can use the z axis..though other positioning settings also work*/
-#theFormID {
+.form {
 	position: fixed;
 	z-index: 5;
 }
-/*styles for making search bar colors consistent with list view colors*/
+/*styles for making search bar colors consistent with list view colors can't get it to work without an ID*/
 #theFieldID {
-	background-color: #ffffff;
+	background-color: #fff;
 }
 /*hides the search bar when the screen gets below a certain*/
 @media (max-width: 40em) {
-.search {
-visibility:hidden;
-}
+	.search {
+	visibility:hidden;
+	}
 }
 /*styles for making sure map has functioning z index as well as no white space from the container div*/
 #map-canvas img{
@@ -45,16 +53,13 @@ visibility:hidden;
 	top: 0px;
 	right: 15px;
 	z-index: 10;
-
-
 }
 /*styles for div containing the list as a whole*/
-#BV-folks {
-
+.BV-folks {
 	list-style-type: none;
 	min-width: 15%;
 	max-width:25%;
-	background-color: #ffffff;
+	background-color: #fff;
 	border-top: solid;
 	border-bottom: solid;
 	border-left: solid;
@@ -68,10 +73,9 @@ visibility:hidden;
 	margin-right:15px;
 	max-height: 400px;
 	overflow: auto;
-
 }
 /*styles for div containing each list item*/
-#list-view {
+.list-view {
 	list-style-type: none;
 	cursor: pointer;
 	background-color: transparent;
@@ -80,6 +84,6 @@ visibility:hidden;
 	border: none;
 }
 a {
-  color: blue;
-  text-decoration: none;
+	color: blue;
+	text-decoration: none;
 }

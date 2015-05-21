@@ -145,8 +145,7 @@ var mapViewModel = function () {
   self.showMenu = ko.observable(false);
   //jQuery's toggle function to switch list view on and off depending on user behavior
   self.toggleMenu = function () {
-    $( "#BV-folks" ).toggle('slow');
-    $( ".list-view" ).toggle('slow');
+    $( ".BV-folks" ).toggle('slow');
   };
   //function containing ajax call to foursquare server as well as other functions related to the data to
   //be retrieved fromt he server
@@ -177,7 +176,7 @@ var mapViewModel = function () {
             var name = venue.name;
             var lat = venue.location.lat;
             var lng = venue.location.lng;
-            //testing to see if item has picture or not and if not supplying a default
+
             if (typeof venue.photos.groups[0] === 'undefined') {
               var photo = "images/photounavailable.png";
             } else {
@@ -185,7 +184,7 @@ var mapViewModel = function () {
               var photosuf = venue.photos.groups[0].items[1].suffix; 
               var photo = photopre + 125 + photosuf;
             }
-            //data from returned hospitals often did not have url so this supplies them manually
+
             if (typeof venue.url === 'undefined') {
                     switch (name) {
                         case "Thainakarin| Medicine Center":
