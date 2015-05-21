@@ -12,6 +12,10 @@ To do: Make url that navigates from each info window to a "get directions" page 
 
 #Instructions
 
+Fork download the repository in its entirety to your desktop and click on the index.html page
+
+Once the app opens, do the below:
+
 Enter a place name in the search bar. If you don't know any common places, use the list view to select a place. 
 
 Clicking on the markers will display a picture and the location's url.
