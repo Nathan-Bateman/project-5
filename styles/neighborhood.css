@@ -13,7 +13,7 @@ html, body, #map-canvas { height: 100%; width: 100%; margin: 0; padding: 0; z-in
 #theFieldID {
 	background-color: #ffffff;
 }
-
+/*hides the search bar when the screen gets below a certain*/
 @media (max-width: 40em) {
 .search {
 visibility:hidden;

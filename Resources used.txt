@@ -18,6 +18,7 @@ https://www.youtube.com/watch?v=b46Jqm3v09c
 http://stackoverflow.com/questions/4005614/elseif-syntax-in-javascript
 https://css-tricks.com/video-screencasts/40-how-z-index-works/
 http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-modals.php
+https://css-tricks.com/forums/topic/make-div-disappear-with-css-media-queries-on-screen-width/
 
 
 

@@ -33,24 +33,26 @@ var venues = {
 var defMapOptions = {
   zoom: 10,
   center: new google.maps.LatLng(13.66448,100.66160)
-}
+};
 var map = new google.maps.Map(document.getElementById('map-canvas'), defMapOptions);
-function initialize() {
+
+var initialize = function initialize() {
   var myLatlng = defMapOptions.center;
   var mapOptions = defMapOptions;
-}
- google.maps.event.addDomListener(window, 'load', initialize);
+};
+
+google.maps.event.addDomListener(window, 'load', initialize);
 //default content for info windows
 var content = document.createElement("DIV");
 // variable that is the one and only info window of the page..content changes upon a click event
-  var infowindow = new google.maps.InfoWindow({
-      content: content,
-      maxWidth: 200
-  });
+var infowindow = new google.maps.InfoWindow({
+  content: content,
+  maxWidth: 200
+});
 
 //put all markers on map with interactive info windows that open and bounce when clicked and
 //close and stop bouncing when clicked or closed
- function setAllMap(map) {
+var setAllMap = function setAllMap(map) {
   
   for (var i = 0; i < markers.length; i++) {
       var mark = markers[i];
@@ -58,7 +60,7 @@ var content = document.createElement("DIV");
 //listener to add the bounce animation to each marker..each marker bounces 2-3 times and then stops
       google.maps.event.addListener(mark, 'click', (function(markcopy) {
           return function() {  
-              if (markcopy.getAnimation() != null) {
+              if (markcopy.getAnimation() !== null) {
                   markcopy.setAnimation(null);
                 } else {
           markcopy.setAnimation(google.maps.Animation.BOUNCE);
@@ -86,20 +88,20 @@ var content = document.createElement("DIV");
     })(mark));
 
   }
-};
+}
 // Shows any markers currently in the markers array.
 function showMarkers() {
   setAllMap(map);
-};
+}
 //takes markers off the map but keeps them in the markers array
 function clearMarkers() {
   setAllMap(null);
-};
+}
 //takes markers out of the array/off of the map
 function deleteMarkers() {
   clearMarkers();
   markers = [];
-};
+}
  
 // function to add places to map
 var Place = function (name, title, lat, long, img, url) {
@@ -114,7 +116,7 @@ var Place = function (name, title, lat, long, img, url) {
  }, this);
  this.htmlImg = ko.computed(function() {
   return '<h4>'+ this.name() + this.title() + '</h4>' + '<img src=' + this.img() + '>' 
-                + '<br>' + '<a href="' + this.url() + '">Visit Site' + '</a><br>'
+     + '<br>' + '<a href="' + this.url() + '">Visit Site' + '</a><br>';
  }, this);
  
  };
@@ -138,14 +140,14 @@ var locations = [ new Place("Tony R - ", "HS/Computers", 13.665189, 100.664765, 
 ];
 
 var mapViewModel = function () {
-	var self = this;
+  var self = this;
   //observable that hides menu by default by working with KO's visible binding
   self.showMenu = ko.observable(false);
   //jQuery's toggle function to switch list view on and off depending on user behavior
   self.toggleMenu = function () {
     $( "#BV-folks" ).toggle('slow');
     $( ".list-view" ).toggle('slow');
-  }
+  };
   //function containing ajax call to foursquare server as well as other functions related to the data to
   //be retrieved fromt he server
   var loadData = function (){
@@ -156,7 +158,7 @@ var mapViewModel = function () {
     self.placeMarkers = function() {
       for (var i = 0; i < self.places().length; i++) {
         addMarker(self.places()[i].lat(), self.places()[i].long(), self.places()[i].nameTitle(), self.places()[i].htmlImg());
-        };
+        }
       showMarkers();
     };
     //iterates through the key values in the venues object to collect data from foursquare
@@ -171,33 +173,39 @@ var mapViewModel = function () {
           url: URL,
           dataType: 'jsonp',
           success: function(response){
-            var venue = response.response.venue
+            var venue = response.response.venue;
             var name = venue.name;
             var lat = venue.location.lat;
             var lng = venue.location.lng;
             //testing to see if item has picture or not and if not supplying a default
             if (typeof venue.photos.groups[0] === 'undefined') {
-              var photo = "images/photounavailable.png";;
+              var photo = "images/photounavailable.png";
             } else {
               var photopre = venue.photos.groups[0].items[1].prefix;
               var photosuf = venue.photos.groups[0].items[1].suffix; 
               var photo = photopre + 125 + photosuf;
-            };
+            }
             //data from returned hospitals often did not have url so this supplies them manually
             if (typeof venue.url === 'undefined') {
                     switch (name) {
                         case "Thainakarin| Medicine Center":
-                          var url = 'http://www.thainakarin.co.th/en/index.php';
+                          url = 'http://www.thainakarin.co.th/en/index.php';
+                          break;
                         case 'โรงพยาบาลศิครินทร์ (Sikarin Hospital)':
-                          var url = 'http://www.sikarin.com/en';
+                          url = 'http://www.sikarin.com/en';
+                          break;
                         case 'โรงพยาบาลสมิติเวช สุขุมวิท (Samitivej Sukhumvit Hospital)':
-                          var url = 'http://www.samitivejhospitals.com/sukhumvit/';
+                          url = 'http://www.samitivejhospitals.com/sukhumvit/';
+                          break;
                         case 'โรงพยาบาลสมิติเวช ศรีนครินทร์ (Samitivej Srinakarin Hospital)':
-                          var url = 'http://www.samitivejhospitals.com/srinakarin/';
+                          url = 'http://www.samitivejhospitals.com/srinakarin/';
+                          break;
                         case 'Bumrungrad International Clinic Building':
-                          var url = 'https://www.bumrungrad.com/thailandhospital';
+                          url = 'https://www.bumrungrad.com/thailandhospital';
+                          break;
                         case 'International Community School (ICS) (โรงเรียนประชาคมนานาชาติ)':
-                          var url = 'http://ics.ac.th/';
+                          url = 'http://ics.ac.th/';
+                          break;
                   default:
                     console.log('nothing');
               }
@@ -229,9 +237,9 @@ var mapViewModel = function () {
           }
       });
 
-    };
+    }
   
-  }
+  };
 //calls the function "loadData" which contains the ajax call
 loadData();
   
@@ -246,15 +254,15 @@ loadData();
       var filter = self.filter();
         deleteMarkers();
         self.places.removeAll();
-     
-        for (var i = 0; i < locations.length; i++) {
+      var len = locations.length;
+        for (var i = 0; i < len; i++) {
           if ((locations)[i].nameTitle().toLowerCase().indexOf(filter.toLowerCase()) >= 0 ) {
                 self.temp().push(locations[i]);    
-              };
-            };
+              }
+            }
             if (self.temp().length === 0) {
               self.places.push(new Place('No items match your search', "", '', '', '', ''));
-            };
+            }
       self.places(self.temp());
       self.placeMarkers();
       
@@ -266,7 +274,7 @@ self.listClick = function(place) {
         var mark = markers[i];
       if (mark.title === place.nameTitle()) {
           google.maps.event.trigger(mark,"click");
-        };
+        }
     }
 };
 
@@ -276,5 +284,4 @@ self.listClick = function(place) {
 };
 
 ko.applyBindings(new mapViewModel());
-
 
