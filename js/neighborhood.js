@@ -88,7 +88,7 @@ var setAllMap = function setAllMap(map) {
     })(mark));
 
   }
-}
+};
 // Shows any markers currently in the markers array.
 function showMarkers() {
   setAllMap(map);
@@ -115,8 +115,8 @@ var Place = function (name, title, lat, long, img, url) {
  return this.name() + " " + this.title();
  }, this);
  this.htmlImg = ko.computed(function() {
-  return '<h4>'+ this.name() + this.title() + '</h4>' + '<img src=' + this.img() + '>' 
-     + '<br>' + '<a href="' + this.url() + '">Visit Site' + '</a><br>';
+  return '<h4>'+ this.name() + this.title() + '</h4>' + '<img src=' + this.img() +
+    '>' + '<br>' + '<a href="' + this.url() + '">Visit Site' + '</a><br>';
  }, this);
  
  };
@@ -176,13 +176,14 @@ var mapViewModel = function () {
             var name = venue.name;
             var lat = venue.location.lat;
             var lng = venue.location.lng;
+            var photo;
 
             if (typeof venue.photos.groups[0] === 'undefined') {
-              var photo = "images/photounavailable.png";
+              photo = "images/photounavailable.png";
             } else {
               var photopre = venue.photos.groups[0].items[1].prefix;
               var photosuf = venue.photos.groups[0].items[1].suffix; 
-              var photo = photopre + 125 + photosuf;
+              photo = photopre + 125 + photosuf;
             }
 
             if (typeof venue.url === 'undefined') {
@@ -209,21 +210,21 @@ var mapViewModel = function () {
                     console.log('nothing');
               }
             } else {
-                  var url = venue.url;
+                    url = venue.url;
             }
             //html for the information window
-            var content = '<h4>'
-                          + name + '</h4>'
-                          + '<img src='
-                          + photo
-                          + '>'
-                          + '<br>'
-                          + '<a class=' 
-                          + 'website' 
-                          + 'href="'
-                          + url
-                          + '">Visit Site'
-                          +'</a><br>';
+            var content = '<h4>' +
+                          name + '</h4>' +
+                          '<img src=' +
+                          photo +
+                          '>' +
+                          '<br>' +
+                          '<a class=' +
+                          'website' + 
+                          'href="' +
+                          url +
+                          '">Visit Site' +
+                          '</a><br>';
             locations.push(new Place(name, "", lat, lng, photo, url));
             //populate the below array with the places from the "locations" array
             self.places(locations.slice(0));
@@ -283,4 +284,3 @@ self.listClick = function(place) {
 };
 
 ko.applyBindings(new mapViewModel());
-
