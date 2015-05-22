@@ -276,11 +276,7 @@ self.listClick = function(place) {
           google.maps.event.trigger(mark,"click");
         }
     }
-};
-
-
-  
-  
+};  
 };
 
 ko.applyBindings(new mapViewModel());

@@ -3,11 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=EDGE">
+  <link rel="stylesheet" href="styles/offline-language-english.css"/>
+  <link rel='stylesheet' href='styles/offline-theme-dark.css'/>
   <link rel='stylesheet' href='styles/bootstrap.css'/>
   <link rel='stylesheet' href='styles/neighborhood.css'/>
   <script src="https://maps.googleapis.com/maps/api/js?"></script>
   <script src="js/knockout-3.3.0.js"></script>
   <script src="js/jQuery.js"></script>
+  <script src="js/offline.min.js"></script>
+  <script type="text/javascript">var run = function(){
+    if (Offline.state === 'up')
+      Offline.check();
+    }
+    setInterval(run, 5000);</script>
 </head>
 <body>
 <!--container div required by bootstrap-->
