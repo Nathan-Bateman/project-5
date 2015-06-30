@@ -22,11 +22,17 @@ body,
 	background-color: #fff;
 }
 /*hides the search bar when the screen gets below a certain*/
-@media (max-width: 40em) {
-	.search {
-	visibility:hidden;
+@media (max-width: 700px) {
+	.menu {
+		visibility:hidden;
+	};
+	.list-view {
+		max-width: 140px;
+		max-height: 150px;
 	}
+
 }
+
 /*styles for making sure map has functioning z index as well as no white space from the container div*/
 #map-canvas img{
     max-width: none;
@@ -79,7 +85,6 @@ body,
 	list-style-type: none;
 	cursor: pointer;
 	background-color: transparent;
-	border: none;
 	padding: 0;
 	border: none;
 }
