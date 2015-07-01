@@ -214,8 +214,8 @@ var mapViewModel = function () {
                     url = venue.url;
             }
             //html for the information window
-            var content = '<h5>' +
-                          name + '</h5>' +
+            var content = '<h1>' +
+                          name + '</h1>' +
                           '<img src=' +
                           photo +
                           '>' +
