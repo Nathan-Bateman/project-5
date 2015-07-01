@@ -270,7 +270,8 @@ loadData();
 
 //causes info marker to act as if it's been clicked when the corresponding list item is clicked
 self.listClick = function(place) {
-  for (var i = 0; i < markers.length; i++) {
+  var len = markers.length;
+  for (var i = 0; i < len; i++) {
         var mark = markers[i];
       if (mark.title === place.nameTitle()) {
           google.maps.event.trigger(mark,"click");
