@@ -7,6 +7,11 @@ body,
 	padding: 0; 
 	z-index: 0;
 }
+.iwphoto {
+	max-width: 5px;
+	max-height: 20px;
+	}
+
 /*styles for setting the container div to the same as the map canvas height and width*/
 .container-fluid {
 	height:100%;
@@ -29,8 +34,7 @@ body,
 	.list-view {
 		max-width: 140px;
 		max-height: 150px;
-	}
-
+	};
 }
 
 /*styles for making sure map has functioning z index as well as no white space from the container div*/
@@ -45,10 +49,11 @@ body,
 /*styles for div containing the search function..max width only way I could keep the bar from over expanding*/
 .search {
 	position: relative;
-	margin: 8em;
+	margin-left: 7em;
 	margin-right: 20px;
+	margin-top: 2em;
 	z-index: 5;
-	max-width: 220px;
+	max-width: 180px;
 }
 /*styles for div containing the main button*/
 .mainbutton {
