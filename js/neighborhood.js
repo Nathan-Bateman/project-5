@@ -67,6 +67,7 @@ var setAllMap = function setAllMap(map) {
           setTimeout(function(){ markcopy.setAnimation(null); }, 1500);
 
         }
+        map.setCenter(markcopy.getPosition());
       };
     })(mark));
 //listener to add the information window to each marker
@@ -213,8 +214,8 @@ var mapViewModel = function () {
                     url = venue.url;
             }
             //html for the information window
-            var content = '<h4>' +
-                          name + '</h4>' +
+            var content = '<h5>' +
+                          name + '</h5>' +
                           '<img src=' +
                           photo +
                           '>' +
