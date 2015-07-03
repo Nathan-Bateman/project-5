@@ -33,7 +33,7 @@
 <!--ends the div for 'venues' and begins divs for BV-Folks and list-view-->
   <div class='BV-folks' data-bind='visible:showMenu'>
   	 <div class="list-group list-view" data-bind="foreach: places">
-        <a href="#" class="list-group-item"> <span data-bind="text: nameTitle, click: $parent.listClick"></span>
+        <a href="#" class="list-group-item" data-bind="click: $parent.listClick"> <span data-bind="text: nameTitle, click: $parent.listClick"></span>
           </a>
       </div>
   </div>
