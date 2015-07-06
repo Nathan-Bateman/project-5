@@ -67,14 +67,14 @@ var setAllMap = function setAllMap(map) {
           setTimeout(function(){ markcopy.setAnimation(null); }, 1500);
 
         }
-        map.setCenter(markcopy.getPosition());
+        //map.setCenter(markcopy.getPosition());
       };
     })(mark));
 //listener to add the information window to each marker
       google.maps.event.addListener(mark, 'click', (function(markcopy) {
         
           return function() {
-          infowindow.setContent('<h4>' + markcopy.content + '</h4>');
+          infowindow.setContent('<h5>' + markcopy.content + '</h5>');
           infowindow.open(map, this);
         };
    
@@ -119,8 +119,18 @@ var Place = function (name, title, lat, long, img, url) {
   return '<h4>'+ this.name() + this.title() + '</h4>' + '<img src=' + this.img() +
     '>' + '<br>' + '<a href="' + this.url() + '">Visit Site' + '</a><br>';
  }, this);
- 
+
+this.marker = new google.maps.Marker({
+    position: new google.maps.LatLng(lat,long),
+    map: map,
+    title: title,
+    content: this.htmlImg()
+
+  });
+    
+    markers.push(this.marker);
  };
+
  //empty array to hold markers
  var markers = [];
 //function to add a marker to the markers array
@@ -142,11 +152,13 @@ var locations = [ new Place("Tony R - ", "HS/Computers", 13.665189, 100.664765, 
 
 var mapViewModel = function () {
   var self = this;
+  //observable to house the currently selected place
+  self.selectedPlace = ko.observable('true');
   //observable that hides menu by default by working with KO's visible binding
   self.showMenu = ko.observable(false);
   //jQuery's toggle function to switch list view on and off depending on user behavior
   self.toggleMenu = function () {
-    $( ".BV-folks" ).toggle('slow');
+    $( ".BV-folks" ).toggle('fast');
   };
   //function containing ajax call to foursquare server as well as other functions related to the data to
   //be retrieved fromt he server
@@ -156,9 +168,9 @@ var mapViewModel = function () {
     self.places = ko.observableArray();
     //adds markers to map by looping through the observable array of self.places
     self.placeMarkers = function() {
-      for (var i = 0; i < self.places().length; i++) {
+      /*for (var i = 0; i < self.places().length; i++) {
         addMarker(self.places()[i].lat(), self.places()[i].long(), self.places()[i].nameTitle(), self.places()[i].htmlImg());
-        }
+        }*/
       showMarkers();
     };
     //iterates through the key values in the venues object to collect data from foursquare
@@ -214,8 +226,8 @@ var mapViewModel = function () {
                     url = venue.url;
             }
             //html for the information window
-            var content = '<h1>' +
-                          name + '</h1>' +
+            var content = '<h5>' +
+                          name + '</h5>' +
                           '<img src=' +
                           photo +
                           '>' +
@@ -271,13 +283,8 @@ loadData();
 
 //causes info marker to act as if it's been clicked when the corresponding list item is clicked
 self.listClick = function(place) {
-  var len = markers.length;
-  for (var i = 0; i < len; i++) {
-        var mark = markers[i];
-      if (mark.title === place.nameTitle()) {
-          google.maps.event.trigger(mark,"click");
-        }
-    }
+  var mark = place.marker;
+  google.maps.event.trigger(mark,"click");
 };  
 };
 
