@@ -71,14 +71,14 @@ var setAllMap = function setAllMap(map) {
       };
     })(mark));
 //listener to add the information window to each marker
-      google.maps.event.addListener(mark, 'click', (function(markcopy) {
+    /*  google.maps.event.addListener(mark, 'click', (function(markcopy) {
         
           return function() {
           infowindow.setContent('<h5>' + markcopy.content + '</h5>');
           infowindow.open(map, this);
         };
    
-    })(mark));
+    })(mark));*/
 //listener to stop the bounce animation upon closing the information window
       google.maps.event.addListener(infowindow, 'closeclick', (function(markcopy) {
         
@@ -128,23 +128,22 @@ this.marker = new google.maps.Marker({
 
   });
     
-    markers.push(this.marker);
+    google.maps.event.addListener(this.marker, 'click', function() {
+    infowindow.setContent('<h4>'+ name + title + '</h4>' + '<img src=' + img +
+    '>' + '<br>' + '<a href="' + url + '">Visit Site' + '</a><br>');
+    infowindow.open(map, this);
+  });
  };
 
  //empty array to hold markers
  var markers = [];
 //function to add a marker to the markers array
-var addMarker = function (lat, long, title, html) {
-    this.marker = new google.maps.Marker({
-    position: new google.maps.LatLng(lat,long),
-    map: map,
-    title: title,
-    content: html
+/*var addMarker = function () {
+    for (var i = 0; i < self.places().length; i++) {
+      markers.push(self.places()[i].marker);
+    }; 
+ };*/
 
-  });
-    
-    markers.push(this.marker);
- };
 //an array of places/people and their coordinates that will go on the map
 var locations = [ new Place("Tony R - ", "HS/Computers", 13.665189, 100.664765, "images/tony.jpg", 'http://ics.ac.th/'),
               new Place("Allan J - ", "MS/Math", 13.665308, 100.664416, "images/allen.jpg",'http://ics.ac.th/')
@@ -153,7 +152,12 @@ var locations = [ new Place("Tony R - ", "HS/Computers", 13.665189, 100.664765, 
 var mapViewModel = function () {
   var self = this;
   //observable to house the currently selected place
-  self.selectedPlace = ko.observable('true');
+  //function to add a marker to the markers array
+var addMarker = function () {
+    for (var i = 0; i < self.places().length; i++) {
+      markers.push(self.places()[i].marker);
+    }; 
+ };
   //observable that hides menu by default by working with KO's visible binding
   self.showMenu = ko.observable(false);
   //jQuery's toggle function to switch list view on and off depending on user behavior
@@ -168,9 +172,10 @@ var mapViewModel = function () {
     self.places = ko.observableArray();
     //adds markers to map by looping through the observable array of self.places
     self.placeMarkers = function() {
-      /*for (var i = 0; i < self.places().length; i++) {
-        addMarker(self.places()[i].lat(), self.places()[i].long(), self.places()[i].nameTitle(), self.places()[i].htmlImg());
-        }*/
+      for (var i = 0; i < self.places().length; i++) {
+        /*addMarker(self.places()[i].lat(), self.places()[i].long(), self.places()[i].nameTitle(), self.places()[i].htmlImg());*/
+        addMarker();
+        }
       showMarkers();
     };
     //iterates through the key values in the venues object to collect data from foursquare
@@ -256,7 +261,7 @@ var mapViewModel = function () {
 //calls the function "loadData" which contains the ajax call
 loadData();
   
-    //the below is bound to the input markup
+    //the below is bound to the input markup for the content the user types into the search bar
     self.filter = ko.observable('');
     //temporary array used to house places from search input and then repopulate the self.places array
     self.temp = ko.observableArray();
