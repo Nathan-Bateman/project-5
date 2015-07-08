@@ -58,7 +58,7 @@ var setAllMap = function setAllMap(map) {
       var mark = markers[i];
       mark.setMap(map);
 //listener to add the bounce animation to each marker..each marker bounces 2-3 times and then stops
-      google.maps.event.addListener(mark, 'click', (function(markcopy) {
+       google.maps.event.addListener(mark, 'click', (function(markcopy) {
           return function() {  
               if (markcopy.getAnimation() !== null) {
                   markcopy.setAnimation(null);
@@ -67,18 +67,9 @@ var setAllMap = function setAllMap(map) {
           setTimeout(function(){ markcopy.setAnimation(null); }, 1500);
 
         }
-        //map.setCenter(markcopy.getPosition());
+        map.setCenter(markcopy.getPosition());
       };
     })(mark));
-//listener to add the information window to each marker
-    /*  google.maps.event.addListener(mark, 'click', (function(markcopy) {
-        
-          return function() {
-          infowindow.setContent('<h5>' + markcopy.content + '</h5>');
-          infowindow.open(map, this);
-        };
-   
-    })(mark));*/
 //listener to stop the bounce animation upon closing the information window
       google.maps.event.addListener(infowindow, 'closeclick', (function(markcopy) {
         
@@ -127,22 +118,17 @@ this.marker = new google.maps.Marker({
     content: this.htmlImg()
 
   });
-    
+ 
     google.maps.event.addListener(this.marker, 'click', function() {
     infowindow.setContent('<h4>'+ name + title + '</h4>' + '<img src=' + img +
     '>' + '<br>' + '<a href="' + url + '">Visit Site' + '</a><br>');
     infowindow.open(map, this);
   });
+
  };
 
  //empty array to hold markers
  var markers = [];
-//function to add a marker to the markers array
-/*var addMarker = function () {
-    for (var i = 0; i < self.places().length; i++) {
-      markers.push(self.places()[i].marker);
-    }; 
- };*/
 
 //an array of places/people and their coordinates that will go on the map
 var locations = [ new Place("Tony R - ", "HS/Computers", 13.665189, 100.664765, "images/tony.jpg", 'http://ics.ac.th/'),
@@ -151,7 +137,7 @@ var locations = [ new Place("Tony R - ", "HS/Computers", 13.665189, 100.664765, 
 
 var mapViewModel = function () {
   var self = this;
-  //observable to house the currently selected place
+
   //function to add a marker to the markers array
 var addMarker = function () {
     for (var i = 0; i < self.places().length; i++) {
