@@ -32,7 +32,7 @@ var venues = {
 //parameters for initial map load
 var defMapOptions = {
   zoom: 10,
-  center: new google.maps.LatLng(13.66448,100.66160)
+  center: new google.maps.LatLng(13.828746,100.571594)
 };
 var map = new google.maps.Map(document.getElementById('map-canvas'), defMapOptions);
 
@@ -50,35 +50,12 @@ var infowindow = new google.maps.InfoWindow({
   maxWidth: 200
 });
 
-//put all markers on map with interactive info windows that open and bounce when clicked and
-//close and stop bouncing when clicked or closed
+//put all markers on map 
 var setAllMap = function setAllMap(map) {
   
   for (var i = 0; i < markers.length; i++) {
       var mark = markers[i];
       mark.setMap(map);
-//listener to add the bounce animation to each marker..each marker bounces 2-3 times and then stops
-       google.maps.event.addListener(mark, 'click', (function(markcopy) {
-          return function() {  
-              if (markcopy.getAnimation() !== null) {
-                  markcopy.setAnimation(null);
-                } else {
-          markcopy.setAnimation(google.maps.Animation.BOUNCE);
-          setTimeout(function(){ markcopy.setAnimation(null); }, 1500);
-
-        }
-        map.setCenter(markcopy.getPosition());
-      };
-    })(mark));
-//listener to stop the bounce animation upon closing the information window
-      google.maps.event.addListener(infowindow, 'closeclick', (function(markcopy) {
-        
-          return function() {
-          markcopy.setAnimation(null);
-        };
-   
-    })(mark));
-
   }
 };
 // Shows any markers currently in the markers array.
@@ -95,7 +72,7 @@ function deleteMarkers() {
   markers = [];
 }
  
-// function to add places to map
+// function to add places to map including creating their markers with infoWindows and event listeners
 var Place = function (name, title, lat, long, img, url) {
  this.name = ko.observable(name);
  this.title = ko.observable(title);
@@ -111,20 +88,40 @@ var Place = function (name, title, lat, long, img, url) {
     '>' + '<br>' + '<a href="' + this.url() + '">Visit Site' + '</a><br>';
  }, this);
 
-this.marker = new google.maps.Marker({
+ this.marker = new google.maps.Marker({
     position: new google.maps.LatLng(lat,long),
     map: map,
     title: title,
     content: this.htmlImg()
 
   });
- 
-    google.maps.event.addListener(this.marker, 'click', function() {
-    infowindow.setContent('<h4>'+ name + title + '</h4>' + '<img src=' + img +
-    '>' + '<br>' + '<a href="' + url + '">Visit Site' + '</a><br>');
-    infowindow.open(map, this);
+//listener to add the information window to each marker
+ google.maps.event.addListener(this.marker, 'click', function() {
+          infowindow.setContent('<h4>'+ name + title + '</h4>' + '<img src=' + img +
+              '>' + '<br>' + '<a href="' + url + '">Visit Site' + '</a><br>');
+          infowindow.open(map, this);
   });
+//listener to add the bounce animation to each marker..each marker bounces 2-3 times and then stops
+ google.maps.event.addListener(this.marker, 'click', (function(markcopy) {
+          return function() {  
+              if (markcopy.getAnimation() !== null) {
+                  markcopy.setAnimation(null);
+                } else {
+          markcopy.setAnimation(google.maps.Animation.BOUNCE);
+          setTimeout(function(){ markcopy.setAnimation(null); }, 1500);
 
+        }
+        map.setCenter(markcopy.getPosition());
+      };
+    })(this.marker));
+//listener to stop the bounce animation upon closing the information window
+ google.maps.event.addListener(infowindow, 'closeclick', (function(markcopy) {
+        
+          return function() {
+          markcopy.setAnimation(null);
+        };
+   
+    })(this.marker));
  };
 
  //empty array to hold markers
