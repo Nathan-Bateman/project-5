@@ -61,7 +61,7 @@ body,
 .BV-folks {
 	list-style-type: none;
 	min-width: 15%;
-	max-width: 50%;
+	max-width: 200px;
 	background-color: #fff;
 	border-top: solid;
 	border-bottom: solid;
