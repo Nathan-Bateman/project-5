@@ -1,0 +1,26 @@
+//causes info marker to act as if it's been clicked when the corresponding list item is clicked
+self.listClick = function(place) {
+  //clearMarkers();
+  //addMarker(place.lat(), place.long(), place.nameTitle(), place.htmlImg());
+  //marker.setMap(map);
+  var len = markers.length;
+  for (var i = 0; i < markers.length; i++) {
+        var mark = markers[i];
+      if (mark.title === place.nameTitle()) {
+          //mark.setMap(map);
+          google.maps.event.trigger(mark,"click");
+        }
+    }
+};  
+};
+
+ko.applyBindings(new mapViewModel());
+
+
+var len = markers.length;
+  for (var i = 0; i < markers.length; i++) {
+        var mark = markers[i];
+      if (mark.title === place.nameTitle()) {
+          google.maps.event.trigger(mark,"click");
+        }
+    }

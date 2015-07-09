@@ -19,6 +19,7 @@ http://stackoverflow.com/questions/4005614/elseif-syntax-in-javascript
 https://css-tricks.com/video-screencasts/40-how-z-index-works/
 http://www.tutorialrepublic.com/twitter-bootstrap-tutorial/bootstrap-modals.php
 https://css-tricks.com/forums/topic/make-div-disappear-with-css-media-queries-on-screen-width/
+http://stackoverflow.com/questions/15946303/google-map-v3-center-a-infowindow-when-opened
 
 
 
