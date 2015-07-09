@@ -29,7 +29,10 @@ body,
 /*hides the search bar when the screen gets below a certain*/
 @media (max-width: 700px) {
 	.menu {
-		visibility:hidden;
+		float: right;
+	};
+	.search {
+		float: top;
 	};
 	.list-view {
 		max-width: 140px;
