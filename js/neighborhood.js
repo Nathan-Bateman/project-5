@@ -252,6 +252,8 @@ loadData();
   //filters the list view and displays only the markers that match the search query or the error message if 
   //nothing matches
   self.search = function () {
+    map.setCenter({lat: 13.828746, lng: 100.571594});
+    infowindow.close();
       var filter = self.filter();
         deleteMarkers();
         self.places.removeAll();
