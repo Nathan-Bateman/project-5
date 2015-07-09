@@ -28,11 +28,25 @@ body,
 }
 /*hides the search bar when the screen gets below a certain*/
 @media (max-width: 700px) {
-	.menu {
-		float: right;
-	};
 	.search {
-		float: top;
+		margin: 0px;
+		padding: none;
+		position: relative;
+		max-width: 0px;
+		z-index: 5;
+	};
+	.mainbutton {
+		margin: 0px;
+		padding: none;
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		z-index: 10;
+	};
+	.BV-folks {
+		margin-top: 36px;
+		margin-right: 0px;
+		max-height: 200px;
 	};
 	.list-view {
 		max-width: 140px;
