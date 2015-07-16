@@ -1,6 +1,12 @@
 var $body = $('body');
 var $mapDiv = $('#map-canvas');
 var $myModal = $('#myModal');
+var $img = $('img');
+online = window.navigator.onLine;
+window.addEventListener("offline", function(e) {alert("please check your connection");})
+
+window.addEventListener("online", function(e) {alert("connection restored!");})
+
 //make cursor appear in search bar automatically
 var setFocus = function() {
   var input = document.getElementById ("theFieldID");
@@ -136,11 +142,11 @@ var mapViewModel = function () {
   var self = this;
 
   //function to add a marker to the markers array
-var addMarker = function () {
+  var addMarker = function () {
     for (var i = 0; i < self.places().length; i++) {
-      markers.push(self.places()[i].marker);
+      markers.push(self.places()[i].marker)
     }; 
- };
+ }
   //observable that hides menu by default by working with KO's visible binding
   self.showMenu = ko.observable(false);
   //jQuery's toggle function to switch list view on and off depending on user behavior
@@ -178,6 +184,7 @@ var addMarker = function () {
             var lat = venue.location.lat;
             var lng = venue.location.lng;
             var photo;
+            // Change the image to a missing image
 
             if (typeof venue.photos.groups[0] === 'undefined') {
               photo = "images/photounavailable.png";
@@ -207,8 +214,7 @@ var addMarker = function () {
                         case 'International Community School (ICS) (โรงเรียนประชาคมนานาชาติ)':
                           url = 'http://ics.ac.th/';
                           break;
-                  default:
-                    console.log('nothing');
+
               }
             } else {
                     url = venue.url;
@@ -218,6 +224,8 @@ var addMarker = function () {
                           name + '</h5>' +
                           '<img src=' +
                           photo +
+                          'onError=' +
+                          "this.onerror=null;this.src='images/photounavailable.png';" +
                           '>' +
                           '<br>' +
                           '<a class=' +
