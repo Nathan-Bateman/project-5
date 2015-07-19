@@ -179,6 +179,9 @@ var mapViewModel = function () {
           url: URL,
           dataType: 'jsonp',
           success: function(response){
+            $("img").error(function(){
+        $(this).hide();
+          });
             var venue = response.response.venue;
             var name = venue.name;
             var lat = venue.location.lat;
