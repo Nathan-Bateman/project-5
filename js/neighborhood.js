@@ -3,8 +3,8 @@ var $mapDiv = $('#map-canvas');
 var $myModal = $('#myModal');
 var $img = $('img');
 $("img").error(function () { 
-    //$(this).hide();
-    $(this).css({visibility:"hidden"}); 
+    $(this).hide();
+    //$(this).css({visibility:"hidden"}); 
 });
 online = window.navigator.onLine;
 window.addEventListener("offline", function(e) {alert("please check your connection");})
