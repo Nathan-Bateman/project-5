@@ -2,9 +2,9 @@ var $body = $('body');
 var $mapDiv = $('#map-canvas');
 var $myModal = $('#myModal');
 online = window.navigator.onLine;
-window.addEventListener("offline", function(e) {alert("please check your connection");})
+window.addEventListener("offline", function(e) {alert("please check your connection");});
 
-window.addEventListener("online", function(e) {alert("connection restored!");})
+window.addEventListener("online", function(e) {alert("connection restored!");});
 
 //make cursor appear in search bar automatically
 var setFocus = function() {
@@ -143,9 +143,9 @@ var mapViewModel = function () {
   //function to add a marker to the markers array
   var addMarker = function () {
     for (var i = 0; i < self.places().length; i++) {
-      markers.push(self.places()[i].marker)
-    }; 
- }
+      markers.push(self.places()[i].marker);
+    } 
+ };
   //observable that hides menu by default by working with KO's visible binding
   self.showMenu = ko.observable(false);
   //jQuery's toggle function to switch list view on and off depending on user behavior
