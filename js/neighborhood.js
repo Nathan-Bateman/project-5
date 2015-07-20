@@ -1,11 +1,6 @@
 var $body = $('body');
 var $mapDiv = $('#map-canvas');
 var $myModal = $('#myModal');
-var $img = $('img');
-$("img").error(function () { 
-    $(this).hide();
-    //$(this).css({visibility:"hidden"}); 
-});
 online = window.navigator.onLine;
 window.addEventListener("offline", function(e) {alert("please check your connection");})
 
@@ -95,7 +90,7 @@ var Place = function (name, title, lat, long, img, url) {
  }, this);
  this.htmlImg = ko.computed(function() {
   return '<h4>'+ this.name() + this.title() + '</h4>' + '<img src=' + this.img() +
-    ' onerror="imageError(this)">' + '<br>' + '<a href="' + this.url() + '">Visit Site' + '</a><br>';
+    '>' + '<br>' + '<a href="' + this.url() + '">Visit Site' + '</a><br>';
  }, this);
 
  this.marker = new google.maps.Marker({
@@ -108,7 +103,7 @@ var Place = function (name, title, lat, long, img, url) {
 //listener to add the information window to each marker
  google.maps.event.addListener(this.marker, 'click', function() {
           infowindow.setContent('<h4>'+ name + title + '</h4>' + '<img src=' + img +
-              ' onerror="imageError(this)">' + '<br>' + '<a href="' + url + '">Visit Site' + '</a><br>');
+              '>' + '<br>' + '<a href="' + url + '">Visit Site' + '</a><br>');
           infowindow.open(map, this);
   });
 //listener to add the bounce animation to each marker..each marker bounces 2-3 times and then stops
@@ -228,7 +223,6 @@ var mapViewModel = function () {
                           name + '</h5>' +
                           '<img src=' +
                           photo +
-                          ' onerror="imageError(this)"' +
                           '>' +
                           '<br>' +
                           '<a class=' +
