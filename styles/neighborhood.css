@@ -7,6 +7,7 @@ body,
 	padding: 0; 
 	z-index: 0;
 }
+
 .iwphoto {
 	max-width: 5px;
 	max-height: 20px;
@@ -114,3 +115,5 @@ a {
 	color: blue;
 	text-decoration: none;
 }
+
+    
