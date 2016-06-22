@@ -11,6 +11,7 @@
     <link rel='stylesheet' href='styles/bootstrap.css' />
     <link rel="stylesheet" media='(max-width: 700px)' href='styles/media.css'>
     <link rel="stylesheet" media='(min-width: 700px)' href='styles/neighborhood.css'>
+    <link rel="stylesheet" href='styles/custom.css'>
     
     <script src="js/knockout-3.3.0.js"></script>
     <script src="js/jQuery.js"></script>
@@ -49,8 +50,8 @@
         <div id="map-canvas">
             
         </div>
-        <div id="map-panel">
-           
+        <div id="map-panel" class='hide'>
+         <h4 class='top-label'>Directions from:<span> Current Location</span>   To: <span id='destination'> Destination</span></h4>
 
         </div>
         <!--closing of container div-->
@@ -72,28 +73,43 @@
             </div>
         </div>
     </div>
-    <style type="text/css">
-        #map-panel {
-            list-style-type: none;
-            border: none;
-            position: absolute;
-            bottom: 0px;
-            right: 0px;
-            z-index: 10;
-            color: red;
-            width: 100%;
-            background-color: #fff;
-            max-height: 25%;
-            overflow-y: scroll;
-        }
-    </style>
+        <!--div containing html modal for error message on failed callback-->
+    <div id="delayModal" class="modal fade">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> -->
+                    <h4 class="modal-title">Please wait while we get your location.</h4>
+                </div>
+                <div class="modal-body">
+                  <div id="circularG">
+                      <div id="circularG_1" class="circularG"></div>
+                      <div id="circularG_2" class="circularG"></div>
+                      <div id="circularG_3" class="circularG"></div>
+                      <div id="circularG_4" class="circularG"></div>
+                      <div id="circularG_5" class="circularG"></div>
+                      <div id="circularG_6" class="circularG"></div>
+                      <div id="circularG_7" class="circularG"></div>
+                      <div id="circularG_8" class="circularG"></div>
+                    </div>
+                    <p id='dialogue'></p>
+                </div>
+                <div class="modal-footer">
+                    <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                </div>
+            </div>
+        </div>
+    </div>
     <script src="js/bootstrap.js"></script>
     <!-- code for app functionality -->
     <script>
 function initialize() {
+  
     var $body = $('body');
     var $mapDiv = $('#map-canvas');
+    var $mapPanel = $('#map-panel');
     var $myModal = $('#myModal');
+    var $delayModal = $('#delayModal');
     online = window.navigator.onLine;
     window.addEventListener("offline", function(e) {alert("please check your connection");});
     window.addEventListener("online", function(e) {alert("connection restored!");});
@@ -128,7 +144,7 @@ function initialize() {
     };
     //parameters for initial map load and directions services
     directionsService = new google.maps.DirectionsService;
-    directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsDisplay = new google.maps.DirectionsRenderer({map: map});
     directionsDisplay.setMap(map);
     directionsDisplay.setPanel(document.getElementById('map-panel'));
     var defMapOptions = {
@@ -177,6 +193,7 @@ function initialize() {
     // Try HTML5 geolocation.
     window.onload = getMyLocation;
         function getMyLocation() {
+          $delayModal.modal('show');
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(displayLocation);
                 console.log(navigator.geolocation);
@@ -189,29 +206,30 @@ function initialize() {
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
         //var div = document.getElementById("location");
-        if (latitude >=97.20 && latitude <=105.40) {
-          if (longitude >=5.55 && longitude <= 20.45 ) {
+        if (longitude >=97.20 && longitude <=105.40 && latitude >=5.55 && latitude <= 20.45) {
+          // if (longitude >=5.55 && longitude <= 20.45 ) {
+            console.log(latitude);
+            console.log(longitude);
+                  document.getElementById("circularG").style.display = "none";
+                  document.getElementById("dialogue").innerHTML = 'Glad your in Thailand! Select items directly from the map or the menu to see how to get from here to there and a helpful image just for kicks.';
+                  window.end = {lat: latitude, lng: longitude};
                   new google.maps.Marker({
                   position: new google.maps.LatLng(latitude,longitude),
                   map: map,
-                  icon: {
-                  path: google.maps.SymbolPath.CIRCLE,
-                  scale: 4
-                },
+                  icon: 'images/target.svg',
                   title: 'YOU ARE HERE!'
                   //content: this.htmlImg()
                 });
-          } 
+          // } 
         } else {
-                  alert('This app is designed to help you find your way around Bangkok, so we will just pretend you are at the airport. Heh.Heh.');
+                  document.getElementById("circularG").style.display = "none";
+                  document.getElementById("dialogue").innerHTML = 'This app is designed to help you find your way around Bangkok, so we will just pretend you are at the airport. Heh.Heh.';
+                  window.end = {lat: 13.6900, lng: 100.7501};
+                  // console.log(window.end);
                   new google.maps.Marker({
                   position: new google.maps.LatLng(13.6900,100.7501),
                   map: map,
-                  icon: {
-                  path: google.maps.SymbolPath.CIRCLE,
-                  fillColor: 'blue',
-                  scale: 8
-                },
+                  icon: 'images/target.svg',
                   title: 'YOU ARE HERE!'
                   //content: this.htmlImg()
                 });
@@ -219,30 +237,30 @@ function initialize() {
           };
     };
     //Direction service call
-Directions = {
-      origin: (13.6900,100.7501),
-      destination: (13.665189, 100.664765),
-      travelMode: google.maps.TravelMode.DRIVING,
-      optimizeWaypoints: true,
-      provideRouteAlternatives: true,
-      avoidHighways: true,
-      avoidTolls: true,
-      region: 'TH'
-    }
+// Directions = {
+//       origin: (13.6900,100.7501),
+//       destination: (13.665189, 100.664765),
+//       travelMode: google.maps.TravelMode.DRIVING,
+//       optimizeWaypoints: true,
+//       provideRouteAlternatives: true,
+//       avoidHighways: true,
+//       avoidTolls: true,
+//       region: 'TH'
+//     }
     // function to add places to map including creating their markers with infoWindows and event listeners
     var Place = function (name, title, lat, long, img, url) {
-     this.name = ko.observable(name);
-     this.title = ko.observable(title);
-     this.lat = ko.observable(lat);
-     this.long = ko.observable(long);
-     this.img = ko.observable(img);
-     this.url = ko.observable(url);
+     this.name = name;
+     this.title = title;
+     this.lat = lat;
+     this.long = long;
+     this.img = img;
+     this.url = url;
      this.nameTitle = ko.computed(function() {
-     return this.name() + " " + this.title();
+     return this.name + " " + this.title;
      }, this);
      this.htmlImg = ko.computed(function() {
-      return '<h4>'+ this.name() + this.title() + '</h4>' + '<img src=' + this.img() +
-        '>' + '<br>' + '<a href="' + this.url() + '">Visit Site' + '</a><br>';
+      return '<h4>'+ this.name + this.title + '</h4>' + '<img src=' + this.img +
+        '>' + '<br>' + '<a href="' + this.url + '">Visit Site' + '</a><br>';
      }, this);
 
      this.marker = new google.maps.Marker({
@@ -257,6 +275,36 @@ Directions = {
               infowindow.setContent('<h4>'+ name + title + '</h4>' + '<img src=' + img +
                   '>' + '<br>' + '<a href="' + url + '">Visit Site' + '</a><br>');
               infowindow.open(map, this);
+              document.getElementById("destination").innerHTML = name;
+      });
+     //listener to open directions when marker clicked
+     google.maps.event.addListener(this.marker, 'click', function(e) {
+                if (e === undefined) {
+                  console.log('ignore');
+                } else {
+                          var latLng = e.latLng;
+                          var lat1 = e.latLng.lat();
+                          var lng1 = e.latLng.lng();
+
+                    function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+                          directionsService.route({
+                          origin: {lat: lat1, lng: lng1},
+                          destination: window.end,
+                          travelMode: google.maps.TravelMode.DRIVING
+                        }, function(response, status) {
+                              if (status === google.maps.DirectionsStatus.OK) {
+                                  directionsDisplay.setDirections(response);
+                                  // console.log(response);
+                              } else {
+                                      window.alert('Directions request failed due to ' + status);
+                                }
+                        });
+                    }
+                       calculateAndDisplayRoute(directionsService, directionsDisplay);
+                       $mapPanel.toggleClass( "hide");
+                       $mapPanel.toggleClass( "show", true );
+                }
+
       });
     //listener to add the bounce animation to each marker..each marker bounces 2-3 times and then stops
      google.maps.event.addListener(this.marker, 'click', (function(markcopy) {
@@ -271,13 +319,15 @@ Directions = {
             map.setCenter(markcopy.getPosition());
           };
         })(this.marker));
-    //listener to stop the bounce animation upon closing the information window
+    //listener to stop the bounce animation and close the directions upon closing the information window
      google.maps.event.addListener(infowindow, 'closeclick', (function(markcopy) {
             
               return function() {
               markcopy.setAnimation(null);
+              $mapPanel.removeClass( "show");
+              $mapPanel.addClass( "hide");
             };
-       
+
         })(this.marker));
      };
 
@@ -316,6 +366,7 @@ Directions = {
                 addMarker();
                 }
               showMarkers();
+              
             };
         //iterates through the key values in the venues object to collect data from foursquare
             for (var venue in venues) {
@@ -397,7 +448,7 @@ Directions = {
           };
         //calls the function "loadData" which contains the ajax call
         loadData();
-  
+
         //the below is bound to the input markup for the content the user types into the search bar
         self.filter = ko.observable('');
         //temporary array used to house places from search input and then repopulate the self.places array
@@ -423,27 +474,39 @@ Directions = {
               self.placeMarkers();    
         };
         //causes info marker to act as if it's been clicked when the corresponding list item is clicked
-        self.listClick = function(place) {
+        self.listClick = function(place,event) {
           var mark = place.marker;
-          google.maps.event.trigger(mark,"click");
+          var lat1 = place.lat;
+          var lng1 = place.long;
+          var destination = place.name;
+         document.getElementById("destination").innerHTML = destination;
+          
+           google.maps.event.trigger(mark,"click");
+           function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+                directionsService.route({
+                origin: {lat: lat1, lng: lng1},
+                destination: window.end,
+                travelMode: google.maps.TravelMode.DRIVING
+              }, function(response, status) {
+                    if (status === google.maps.DirectionsStatus.OK) {
+                        directionsDisplay.setDirections(response);
+                        // console.log(response);
+                    } else {
+                            window.alert('Directions request failed due to ' + status);
+                      }
+              });
+          }
+             calculateAndDisplayRoute(directionsService, directionsDisplay);
+             $mapPanel.toggleClass( "hide");
+             $mapPanel.toggleClass( "show", true );
+
         };  
     };
 ko.applyBindings(new mapViewModel());
+
 };
-    function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-      directionsService.route({
-        origin: {lat: 13.6900, lng: 100.7501},
-        destination: {lat: 13.665189, lng: 100.664765},
-        travelMode: google.maps.TravelMode.DRIVING
-      }, function(response, status) {
-        if (status === google.maps.DirectionsStatus.OK) {
-          directionsDisplay.setDirections(response);
-          console.log(response);
-        } else {
-          window.alert('Directions request failed due to ' + status);
-        }
-      });
-    }
+
+
     </script>
     <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBf6eVqBHHikDBUwt_U_WBJRgNoqjdmSiM&callback=initialize"></script>
     
