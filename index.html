@@ -78,7 +78,7 @@
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
-                    <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> -->
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Please wait while we get your location.</h4>
                 </div>
                 <div class="modal-body">
@@ -95,7 +95,7 @@
                     <p id='dialogue'></p>
                 </div>
                 <div class="modal-footer">
-                    <!-- <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+                    <button id='close-button' type="button" class="btn btn-default hide" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -110,6 +110,7 @@ function initialize() {
     var $mapPanel = $('#map-panel');
     var $myModal = $('#myModal');
     var $delayModal = $('#delayModal');
+    var $closeButton = $('#close-button');
     online = window.navigator.onLine;
     window.addEventListener("offline", function(e) {alert("please check your connection");});
     window.addEventListener("online", function(e) {alert("connection restored!");});
@@ -206,6 +207,7 @@ function initialize() {
         var latitude = position.coords.latitude;
         var longitude = position.coords.longitude;
         //var div = document.getElementById("location");
+
         if (longitude >=97.20 && longitude <=105.40 && latitude >=5.55 && latitude <= 20.45) {
           // if (longitude >=5.55 && longitude <= 20.45 ) {
             console.log(latitude);
@@ -220,6 +222,7 @@ function initialize() {
                   title: 'YOU ARE HERE!'
                   //content: this.htmlImg()
                 });
+                  $closeButton.toggleClass('hide');
           // } 
         } else {
                   document.getElementById("circularG").style.display = "none";
@@ -233,6 +236,7 @@ function initialize() {
                   title: 'YOU ARE HERE!'
                   //content: this.htmlImg()
                 });
+                  $closeButton.toggleClass('hide');
 
           };
     };

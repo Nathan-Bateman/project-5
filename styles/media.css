@@ -148,6 +148,9 @@ a {
 .adp-summary + div {  
 	background-color: rgba(159, 193, 221, 0.48);
 }
+.modal-footer {
+	text-align: center;
+}
 /*spinner*/
 #circularG{
 	position:relative;

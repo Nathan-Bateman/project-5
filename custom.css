@@ -1,0 +1,8 @@
+@media (min-width: 408px) and (max-width: 767px){
+   #map-panel .adp-placemark {
+        	margin-top: 60px;
+        }
+        #map-panel > div > div > div:nth-child(3) > div:nth-child(3) .adp-placemark {
+        	margin: 0;
+        }
+}
